@@ -221,9 +221,7 @@ def main(args):
             notes=socket.gethostname(),
             name=str(all_args.algorithm_name)
             + "_"
-            + str(all_args.experiment_name)
-            + "_seed"
-            + str(all_args.seed),
+            + str(all_args.scenario_name),
             # group=all_args.scenario_name,
             dir=str(run_dir),
             # job_type="training",

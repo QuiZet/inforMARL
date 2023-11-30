@@ -1,0 +1,6 @@
+#exclue cache files and subsequent directories
+__pycache/
+*.pyc
+
+#exclude the test results
+results/

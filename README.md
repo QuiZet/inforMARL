@@ -64,7 +64,7 @@ python -u onpolicy/scripts/train_mpe.py --use_valuenorm --use_popart \
 --graph_feat_type "relative" \
 --auto_mini_batch_size --target_mini_batch_size 128
 ```
-**note**: Replace `WANDB_USER_ID` with own wandb ID
+**note**: Replace `WANDB_USER_ID` with own wandb entity ID
 
 ## Graph Neural Network Compatible Navigation Environment:
 We also provide with code for the navigation environment which is compatible to be used with graph neural networks.
