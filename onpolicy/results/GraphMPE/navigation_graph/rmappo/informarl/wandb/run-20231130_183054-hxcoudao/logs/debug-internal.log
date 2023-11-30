@@ -1,0 +1,274 @@
+2023-11-30 18:30:54,366 INFO    StreamThr :1443590 [internal.py:wandb_internal():86] W&B internal server running at pid: 1443590, started at: 2023-11-30 18:30:54.366260
+2023-11-30 18:30:54,367 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status
+2023-11-30 18:30:54,370 INFO    WriterThread:1443590 [datastore.py:open_for_write():85] open: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/run-hxcoudao.wandb
+2023-11-30 18:30:54,371 DEBUG   SenderThread:1443590 [sender.py:send():379] send: header
+2023-11-30 18:30:54,374 DEBUG   SenderThread:1443590 [sender.py:send():379] send: run
+2023-11-30 18:30:54,855 INFO    SenderThread:1443590 [dir_watcher.py:__init__():211] watching files in: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files
+2023-11-30 18:30:54,855 INFO    SenderThread:1443590 [sender.py:_start_run_threads():1121] run started: hxcoudao with start time 1701336654.366105
+2023-11-30 18:30:54,863 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: check_version
+2023-11-30 18:30:54,863 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: check_version
+2023-11-30 18:30:54,898 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: run_start
+2023-11-30 18:30:54,905 DEBUG   HandlerThread:1443590 [system_info.py:__init__():32] System info init
+2023-11-30 18:30:54,905 DEBUG   HandlerThread:1443590 [system_info.py:__init__():47] System info init done
+2023-11-30 18:30:54,905 INFO    HandlerThread:1443590 [system_monitor.py:start():181] Starting system monitor
+2023-11-30 18:30:54,905 INFO    SystemMonitor:1443590 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-11-30 18:30:54,905 INFO    HandlerThread:1443590 [system_monitor.py:probe():201] Collecting system info
+2023-11-30 18:30:54,906 INFO    SystemMonitor:1443590 [interfaces.py:start():190] Started cpu monitoring
+2023-11-30 18:30:54,906 INFO    SystemMonitor:1443590 [interfaces.py:start():190] Started disk monitoring
+2023-11-30 18:30:54,907 INFO    SystemMonitor:1443590 [interfaces.py:start():190] Started gpu monitoring
+2023-11-30 18:30:54,908 INFO    SystemMonitor:1443590 [interfaces.py:start():190] Started memory monitoring
+2023-11-30 18:30:54,909 INFO    SystemMonitor:1443590 [interfaces.py:start():190] Started network monitoring
+2023-11-30 18:30:54,938 DEBUG   HandlerThread:1443590 [system_info.py:probe():196] Probing system
+2023-11-30 18:30:54,939 DEBUG   HandlerThread:1443590 [system_info.py:_probe_git():181] Probing git
+2023-11-30 18:30:54,944 DEBUG   HandlerThread:1443590 [system_info.py:_probe_git():189] Probing git done
+2023-11-30 18:30:54,944 DEBUG   HandlerThread:1443590 [system_info.py:probe():244] Probing system done
+2023-11-30 18:30:54,944 DEBUG   HandlerThread:1443590 [system_monitor.py:probe():210] {'os': 'Linux-5.15.0-41-generic-x86_64-with-glibc2.31', 'python': '3.10.11', 'heartbeatAt': '2023-11-30T09:30:54.938205', 'startedAt': '2023-11-30T09:30:54.360908', 'docker': None, 'cuda': None, 'args': ('--use_valuenorm', '--use_popart', '--project_name', 'informarl', '--env_name', 'GraphMPE', '--algorithm_name', 'rmappo', '--seed', '0', '--experiment_name', 'informarl', '--scenario_name', 'navigation_graph', '--num_agents', '3', '--collision_rew', '5', '--n_training_threads', '1', '--n_rollout_threads', '128', '--num_mini_batch', '1', '--episode_length', '25', '--num_env_steps', '2000000', '--ppo_epoch', '10', '--use_ReLU', '--gain', '0.01', '--lr', '7e-4', '--critic_lr', '7e-4', '--user_name', 'yungisimon', '--use_cent_obs', 'False', '--graph_feat_type', 'relative', '--auto_mini_batch_size', '--target_mini_batch_size', '128'), 'state': 'running', 'program': '/home/yungisimon/inforMARL/onpolicy/scripts/train_mpe.py', 'codePathLocal': 'onpolicy/scripts/train_mpe.py', 'codePath': 'onpolicy/scripts/train_mpe.py', 'git': {'remote': 'git@github.com:QuiZet/inforMARL.git', 'commit': '2a623929c1d4ddfcc797ce2b1065c43bc1932b7b'}, 'email': 'yungisimon@gmail.com', 'root': '/home/yungisimon/inforMARL', 'host': 'Simon', 'username': 'yungisimon', 'executable': '/home/yungisimon/anaconda3/envs/hetnet/bin/python', 'cpu_count': 12, 'cpu_count_logical': 24, 'cpu_freq': {'current': 2.203083333333334, 'min': 2200.0, 'max': 3700.0}, 'cpu_freq_per_core': [{'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.274, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}, {'current': 2.2, 'min': 2200.0, 'max': 3700.0}], 'disk': {'/': {'total': 915.3232879638672, 'used': 605.0502471923828}}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}], 'memory': {'total': 31.256671905517578}}
+2023-11-30 18:30:54,944 INFO    HandlerThread:1443590 [system_monitor.py:probe():211] Finished collecting system info
+2023-11-30 18:30:54,944 INFO    HandlerThread:1443590 [system_monitor.py:probe():214] Publishing system info
+2023-11-30 18:30:54,944 DEBUG   HandlerThread:1443590 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-11-30 18:30:54,944 DEBUG   HandlerThread:1443590 [system_info.py:_save_pip():68] Saving pip packages done
+2023-11-30 18:30:54,945 DEBUG   HandlerThread:1443590 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-11-30 18:30:55,856 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/requirements.txt
+2023-11-30 18:30:55,856 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/conda-environment.yaml
+2023-11-30 18:30:56,604 DEBUG   HandlerThread:1443590 [system_info.py:_save_conda():87] Saving conda packages done
+2023-11-30 18:30:56,605 INFO    HandlerThread:1443590 [system_monitor.py:probe():216] Finished publishing system info
+2023-11-30 18:30:56,615 DEBUG   SenderThread:1443590 [sender.py:send():379] send: files
+2023-11-30 18:30:56,615 INFO    SenderThread:1443590 [sender.py:_save_file():1375] saving file wandb-metadata.json with policy now
+2023-11-30 18:30:56,618 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:30:56,618 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:30:56,620 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:30:56,822 DEBUG   SenderThread:1443590 [sender.py:send():379] send: telemetry
+2023-11-30 18:30:56,855 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/conda-environment.yaml
+2023-11-30 18:30:56,856 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/wandb-metadata.json
+2023-11-30 18:30:57,286 INFO    wandb-upload_0:1443590 [upload_job.py:push():131] Uploaded file /tmp/tmp6kfb66b9wandb/ritavyy8-wandb-metadata.json
+2023-11-30 18:30:57,988 DEBUG   SenderThread:1443590 [sender.py:send():379] send: telemetry
+2023-11-30 18:30:58,856 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:30:59,461 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:00,856 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:31:01,857 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:31:04,543 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:09,543 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:11,618 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:31:11,619 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:31:11,620 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:31:14,875 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:19,875 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:24,879 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:25,863 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/config.yaml
+2023-11-30 18:31:26,619 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:31:26,619 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:31:26,660 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:31:30,892 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:35,893 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:40,893 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:41,619 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:31:41,619 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:31:41,620 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:31:43,246 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,246 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,246 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,246 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,246 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,248 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,248 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,248 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: partial_history
+2023-11-30 18:31:43,867 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/critic.pt
+2023-11-30 18:31:43,867 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/actor.pt
+2023-11-30 18:31:44,867 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:31:46,247 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:51,248 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:31:54,909 DEBUG   SystemMonitor:1443590 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-11-30 18:31:54,910 DEBUG   SenderThread:1443590 [sender.py:send():379] send: stats
+2023-11-30 18:31:56,619 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:31:56,619 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:31:56,621 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:31:56,792 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:01,792 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:06,793 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:11,619 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:32:11,619 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:32:11,660 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:32:11,889 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:16,890 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:21,890 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:24,911 DEBUG   SenderThread:1443590 [sender.py:send():379] send: stats
+2023-11-30 18:32:26,620 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:32:26,620 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:32:26,620 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:32:27,878 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/critic.pt
+2023-11-30 18:32:27,879 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/actor.pt
+2023-11-30 18:32:27,889 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:32,889 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:37,890 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:41,619 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-30 18:32:41,620 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: stop_status
+2023-11-30 18:32:41,621 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:32:42,923 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:47,923 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:52,924 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:53,133 DEBUG   SenderThread:1443590 [sender.py:send():379] send: exit
+2023-11-30 18:32:53,133 INFO    SenderThread:1443590 [sender.py:send_exit():584] handling exit code: 255
+2023-11-30 18:32:53,133 INFO    SenderThread:1443590 [sender.py:send_exit():586] handling runtime: 118
+2023-11-30 18:32:53,134 INFO    SenderThread:1443590 [sender.py:_save_file():1375] saving file wandb-summary.json with policy end
+2023-11-30 18:32:53,134 INFO    SenderThread:1443590 [sender.py:send_exit():592] send defer
+2023-11-30 18:32:53,135 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,135 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 0
+2023-11-30 18:32:53,135 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,135 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 0
+2023-11-30 18:32:53,135 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 1
+2023-11-30 18:32:53,135 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,135 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 1
+2023-11-30 18:32:53,135 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,135 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 1
+2023-11-30 18:32:53,135 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 2
+2023-11-30 18:32:53,135 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,135 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 2
+2023-11-30 18:32:53,135 INFO    HandlerThread:1443590 [system_monitor.py:finish():190] Stopping system monitor
+2023-11-30 18:32:53,136 DEBUG   SystemMonitor:1443590 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-11-30 18:32:53,136 DEBUG   SystemMonitor:1443590 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-11-30 18:32:53,137 INFO    HandlerThread:1443590 [interfaces.py:finish():202] Joined cpu monitor
+2023-11-30 18:32:53,137 INFO    HandlerThread:1443590 [interfaces.py:finish():202] Joined disk monitor
+2023-11-30 18:32:53,198 INFO    HandlerThread:1443590 [interfaces.py:finish():202] Joined gpu monitor
+2023-11-30 18:32:53,199 INFO    HandlerThread:1443590 [interfaces.py:finish():202] Joined memory monitor
+2023-11-30 18:32:53,199 INFO    HandlerThread:1443590 [interfaces.py:finish():202] Joined network monitor
+2023-11-30 18:32:53,199 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,199 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 2
+2023-11-30 18:32:53,199 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 3
+2023-11-30 18:32:53,200 DEBUG   SenderThread:1443590 [sender.py:send():379] send: stats
+2023-11-30 18:32:53,200 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,200 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 3
+2023-11-30 18:32:53,202 DEBUG   SenderThread:1443590 [sender.py:send():379] send: history
+2023-11-30 18:32:53,202 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: summary_record
+2023-11-30 18:32:53,203 INFO    SenderThread:1443590 [sender.py:_save_file():1375] saving file wandb-summary.json with policy end
+2023-11-30 18:32:53,203 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,203 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 3
+2023-11-30 18:32:53,203 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 4
+2023-11-30 18:32:53,203 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,203 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 4
+2023-11-30 18:32:53,203 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,203 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 4
+2023-11-30 18:32:53,203 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 5
+2023-11-30 18:32:53,204 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,204 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 5
+2023-11-30 18:32:53,204 DEBUG   SenderThread:1443590 [sender.py:send():379] send: summary
+2023-11-30 18:32:53,207 INFO    SenderThread:1443590 [sender.py:_save_file():1375] saving file wandb-summary.json with policy end
+2023-11-30 18:32:53,208 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,208 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 5
+2023-11-30 18:32:53,208 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 6
+2023-11-30 18:32:53,208 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,208 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 6
+2023-11-30 18:32:53,208 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,208 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 6
+2023-11-30 18:32:53,208 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 7
+2023-11-30 18:32:53,208 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:53,208 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:53,208 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 7
+2023-11-30 18:32:53,209 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:53,209 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 7
+2023-11-30 18:32:53,885 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:32:53,885 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_created():271] file/dir created: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/wandb-summary.json
+2023-11-30 18:32:54,153 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: poll_exit
+2023-11-30 18:32:55,666 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 8
+2023-11-30 18:32:55,667 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: poll_exit
+2023-11-30 18:32:55,667 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:55,667 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 8
+2023-11-30 18:32:55,667 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:55,667 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 8
+2023-11-30 18:32:55,668 INFO    SenderThread:1443590 [job_builder.py:build():281] Attempting to build job artifact
+2023-11-30 18:32:55,668 INFO    SenderThread:1443590 [job_builder.py:_get_source_type():393] is repo sourced job
+2023-11-30 18:32:55,670 INFO    SenderThread:1443590 [job_builder.py:build():369] adding wandb-job metadata file
+2023-11-30 18:32:55,678 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 9
+2023-11-30 18:32:55,679 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:55,679 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 9
+2023-11-30 18:32:55,679 DEBUG   SenderThread:1443590 [sender.py:send():379] send: artifact
+2023-11-30 18:32:55,886 INFO    Thread-12 :1443590 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:32:57,258 INFO    wandb-upload_1:1443590 [upload_job.py:push():89] Uploaded file /home/yungisimon/.local/share/wandb/artifacts/staging/tmpdw2nsf3m
+2023-11-30 18:32:57,259 INFO    wandb-upload_0:1443590 [upload_job.py:push():89] Uploaded file /home/yungisimon/.local/share/wandb/artifacts/staging/tmpxyzeatlb
+2023-11-30 18:32:58,458 INFO    SenderThread:1443590 [sender.py:send_artifact():1453] sent artifact job-git_github.com_QuiZet_inforMARL.git_onpolicy_scripts_train_mpe.py - {'id': 'QXJ0aWZhY3Q6NjUzNDMyMjM0', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjExOTg1ODk3MQ==', 'latestArtifact': None}}
+2023-11-30 18:32:58,458 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:58,458 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: status_report
+2023-11-30 18:32:58,458 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 9
+2023-11-30 18:32:58,459 INFO    SenderThread:1443590 [dir_watcher.py:finish():358] shutting down directory watcher
+2023-11-30 18:32:58,888 INFO    SenderThread:1443590 [dir_watcher.py:finish():388] scan: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files
+2023-11-30 18:32:58,888 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/actor.pt actor.pt
+2023-11-30 18:32:58,888 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/wandb-metadata.json wandb-metadata.json
+2023-11-30 18:32:58,888 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/wandb-summary.json wandb-summary.json
+2023-11-30 18:32:58,889 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log output.log
+2023-11-30 18:32:58,889 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/requirements.txt requirements.txt
+2023-11-30 18:32:58,889 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/critic.pt critic.pt
+2023-11-30 18:32:58,891 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/conda-environment.yaml conda-environment.yaml
+2023-11-30 18:32:58,893 INFO    SenderThread:1443590 [dir_watcher.py:finish():402] scan save: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/config.yaml config.yaml
+2023-11-30 18:32:58,893 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 10
+2023-11-30 18:32:58,893 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:32:58,893 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 10
+2023-11-30 18:32:58,897 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:32:58,897 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 10
+2023-11-30 18:32:58,897 INFO    SenderThread:1443590 [file_pusher.py:finish():175] shutting down file pusher
+2023-11-30 18:32:59,155 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: keepalive
+2023-11-30 18:32:59,277 INFO    wandb-upload_1:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/wandb-summary.json
+2023-11-30 18:32:59,338 INFO    wandb-upload_0:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/output.log
+2023-11-30 18:32:59,353 INFO    wandb-upload_5:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/conda-environment.yaml
+2023-11-30 18:32:59,354 INFO    wandb-upload_3:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/requirements.txt
+2023-11-30 18:32:59,364 INFO    wandb-upload_6:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/config.yaml
+2023-11-30 18:32:59,696 INFO    wandb-upload_2:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/actor.pt
+2023-11-30 18:33:00,079 INFO    wandb-upload_4:1443590 [upload_job.py:push():131] Uploaded file /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/files/critic.pt
+2023-11-30 18:33:00,279 INFO    Thread-11 (_thread_body):1443590 [sender.py:transition_state():612] send defer: 11
+2023-11-30 18:33:00,280 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:33:00,280 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 11
+2023-11-30 18:33:00,280 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:33:00,281 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 11
+2023-11-30 18:33:00,281 INFO    SenderThread:1443590 [file_pusher.py:join():181] waiting for file pusher
+2023-11-30 18:33:00,281 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 12
+2023-11-30 18:33:00,281 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:33:00,281 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 12
+2023-11-30 18:33:00,281 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:33:00,281 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 12
+2023-11-30 18:33:00,281 INFO    SenderThread:1443590 [file_stream.py:finish():594] file stream finish called
+2023-11-30 18:33:00,934 INFO    SenderThread:1443590 [file_stream.py:finish():598] file stream finish is done
+2023-11-30 18:33:00,934 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 13
+2023-11-30 18:33:00,934 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:33:00,934 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 13
+2023-11-30 18:33:00,934 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:33:00,934 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 13
+2023-11-30 18:33:00,934 INFO    SenderThread:1443590 [sender.py:transition_state():612] send defer: 14
+2023-11-30 18:33:00,935 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: defer
+2023-11-30 18:33:00,935 INFO    HandlerThread:1443590 [handler.py:handle_request_defer():170] handle defer: 14
+2023-11-30 18:33:00,935 DEBUG   SenderThread:1443590 [sender.py:send():379] send: final
+2023-11-30 18:33:00,935 DEBUG   SenderThread:1443590 [sender.py:send():379] send: footer
+2023-11-30 18:33:00,935 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: defer
+2023-11-30 18:33:00,935 INFO    SenderThread:1443590 [sender.py:send_request_defer():608] handle sender defer: 14
+2023-11-30 18:33:00,936 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: poll_exit
+2023-11-30 18:33:00,936 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: poll_exit
+2023-11-30 18:33:00,936 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: server_info
+2023-11-30 18:33:00,936 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: get_summary
+2023-11-30 18:33:00,936 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: server_info
+2023-11-30 18:33:00,937 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: sampled_history
+2023-11-30 18:33:00,939 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: internal_messages
+2023-11-30 18:33:00,939 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: job_info
+2023-11-30 18:33:01,101 DEBUG   SenderThread:1443590 [sender.py:send_request():406] send_request: job_info
+2023-11-30 18:33:01,102 INFO    MainThread:1443590 [wandb_run.py:_footer_history_summary_info():3557] rendering history
+2023-11-30 18:33:01,102 INFO    MainThread:1443590 [wandb_run.py:_footer_history_summary_info():3589] rendering summary
+2023-11-30 18:33:01,102 INFO    MainThread:1443590 [wandb_run.py:_footer_sync_info():3516] logging synced files
+2023-11-30 18:33:01,103 DEBUG   HandlerThread:1443590 [handler.py:handle_request():144] handle_request: shutdown
+2023-11-30 18:33:01,103 INFO    HandlerThread:1443590 [handler.py:finish():840] shutting down handler
+2023-11-30 18:33:01,940 INFO    WriterThread:1443590 [datastore.py:close():294] close: /home/yungisimon/inforMARL/onpolicy/results/GraphMPE/navigation_graph/rmappo/informarl/wandb/run-20231130_183054-hxcoudao/run-hxcoudao.wandb
+2023-11-30 18:33:02,102 INFO    SenderThread:1443590 [sender.py:finish():1531] shutting down sender
+2023-11-30 18:33:02,102 INFO    SenderThread:1443590 [file_pusher.py:finish():175] shutting down file pusher
+2023-11-30 18:33:02,102 INFO    SenderThread:1443590 [file_pusher.py:join():181] waiting for file pusher

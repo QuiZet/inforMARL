@@ -59,11 +59,12 @@ python -u onpolicy/scripts/train_mpe.py --use_valuenorm --use_popart \
 --episode_length 25 \
 --num_env_steps 2000000 \
 --ppo_epoch 10 --use_ReLU --gain 0.01 --lr 7e-4 --critic_lr 7e-4 \
---user_name "marl" \
+--user_name "WANDB_USER_ID" \
 --use_cent_obs "False" \
 --graph_feat_type "relative" \
 --auto_mini_batch_size --target_mini_batch_size 128
 ```
+**note**: Replace `WANDB_USER_ID` with own wandb ID
 
 ## Graph Neural Network Compatible Navigation Environment:
 We also provide with code for the navigation environment which is compatible to be used with graph neural networks.
