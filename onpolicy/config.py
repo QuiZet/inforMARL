@@ -173,7 +173,7 @@ def get_config():
 
     # prepare parameters
     parser.add_argument(
-        "--algorithm_name", type=str, default="mappo", choices=["rmappo", "mappo"]
+        "--algorithm_name", type=str, default="rmappo", choices=["rmappo", "mappo"]
     )
 
     parser.add_argument(

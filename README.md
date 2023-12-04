@@ -64,7 +64,30 @@ python -u onpolicy/scripts/train_mpe.py --use_valuenorm --use_popart \
 --graph_feat_type "relative" \
 --auto_mini_batch_size --target_mini_batch_size 128
 ```
+
+To train InforMARL on simple_spread:
+```bash
+python -u onpolicy/scripts/train_mpe.py \
+--project_name "informarl" \
+--user_name "WANDB_USER_ID" \
+--env_name "MPE" \
+--algorithm_name "rmappo" \ 
+--seed 0 \
+--experiment_name "informarl" \
+--scenario_name "simple_spread" \
+--num_landmarks 3 \
+--num_agents 2 \
+--num_obstacles 3 \
+--collaborative True \
+--max_speed 2 \
+--collision_rew 5 \
+--goal_rew 5 \
+--min_dist_thresh 0.05 \
+--use_dones False \
+```
+
 **note**: Replace `WANDB_USER_ID` with own wandb entity ID
+
 
 ## Graph Neural Network Compatible Navigation Environment:
 We also provide with code for the navigation environment which is compatible to be used with graph neural networks.
