@@ -86,6 +86,23 @@ python -u onpolicy/scripts/train_mpe.py \
 --use_dones False \
 ```
 
+To train InforMARL on simple_reference:
+```bash
+python -u onpolicy/scripts/train_mpe.py \
+--project_name "informarl" \
+--scenario_name "simple_reference" \
+--user_name "WANDB_USER_ID" \
+--env_name "MPE" \
+--algorithm_name "rmappo" \ 
+--seed 0 \
+--experiment_name "informarl" \
+--num_landmarks 3 \
+--num_agents 2 \
+--collaborative True \
+--max_speed 2 \
+--use_dones False \
+```
+
 **note**: Replace `WANDB_USER_ID` with own wandb entity ID
 
 
