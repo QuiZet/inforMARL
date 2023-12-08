@@ -1,0 +1,222 @@
+
+Overriding Observation dimension
+/home/yungisimon/anaconda3/envs/hetnet/lib/python3.10/site-packages/torch_geometric/deprecation.py:22: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+Overriding Observation dimension
+________________________________________________________________________________
+Actor Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Actor(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0-1): 2 x TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((22,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=22, out_features=64, bias=True)
+        (1): Tanh()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): Tanh()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): Tanh()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (act): ACTLayer(
+    (action_out): Categorical(
+      (linear): Linear(in_features=64, out_features=5, bias=True)
+    )
+  )
+)
+________________________________________________________________________________
+________________________________________________________________________________
+Critic Network
+________________________________________________________________________________
+________________________________________________________________________________
+GR_Critic(
+  (gnn_base): GNNBase(
+    (gnn): TransformerConvNet(
+      (active_func): ReLU()
+      (embed_layer): EmbedConv()
+      (gnn1): TransformerConv(16, 16, heads=3)
+      (gnn2): ModuleList(
+        (0-1): 2 x TransformerConv(16, 16, heads=3)
+      )
+    )
+  )
+  (base): MLPBase(
+    (feature_norm): LayerNorm((16,), eps=1e-05, elementwise_affine=True)
+    (mlp): MLPLayer(
+      (fc1): Sequential(
+        (0): Linear(in_features=16, out_features=64, bias=True)
+        (1): Tanh()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc_h): Sequential(
+        (0): Linear(in_features=64, out_features=64, bias=True)
+        (1): Tanh()
+        (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+      )
+      (fc2): ModuleList(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=64, bias=True)
+          (1): Tanh()
+          (2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+    )
+  )
+  (rnn): RNNLayer(
+    (rnn): GRU(64, 64)
+    (norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+  )
+  (v_out): PopArt()
+)
+________________________________________________________________________________
+Average episode rewards is -183.054 	Total timesteps: 3200 	 Percentage complete 0.160
+Average episode rewards is -168.704 	Total timesteps: 19200 	 Percentage complete 0.960
+Average episode rewards is -156.719 	Total timesteps: 35200 	 Percentage complete 1.760
+Average episode rewards is -156.009 	Total timesteps: 51200 	 Percentage complete 2.560
+Average episode rewards is -147.423 	Total timesteps: 67200 	 Percentage complete 3.360
+Average episode rewards is -146.524 	Total timesteps: 83200 	 Percentage complete 4.160
+Average episode rewards is -130.871 	Total timesteps: 99200 	 Percentage complete 4.960
+Average episode rewards is -123.664 	Total timesteps: 115200 	 Percentage complete 5.760
+Average episode rewards is -123.020 	Total timesteps: 131200 	 Percentage complete 6.560
+Average episode rewards is -123.747 	Total timesteps: 147200 	 Percentage complete 7.360
+Average episode rewards is -115.096 	Total timesteps: 163200 	 Percentage complete 8.160
+Average episode rewards is -119.324 	Total timesteps: 179200 	 Percentage complete 8.960
+Average episode rewards is -111.953 	Total timesteps: 195200 	 Percentage complete 9.760
+Average episode rewards is -104.936 	Total timesteps: 211200 	 Percentage complete 10.560
+Average episode rewards is -108.383 	Total timesteps: 227200 	 Percentage complete 11.360
+Average episode rewards is -106.992 	Total timesteps: 243200 	 Percentage complete 12.160
+Average episode rewards is -108.148 	Total timesteps: 259200 	 Percentage complete 12.960
+Average episode rewards is -99.421 	Total timesteps: 275200 	 Percentage complete 13.760
+Average episode rewards is -101.402 	Total timesteps: 291200 	 Percentage complete 14.560
+Average episode rewards is -95.945 	Total timesteps: 307200 	 Percentage complete 15.360
+Average episode rewards is -93.693 	Total timesteps: 323200 	 Percentage complete 16.160
+Average episode rewards is -105.267 	Total timesteps: 339200 	 Percentage complete 16.960
+Average episode rewards is -100.200 	Total timesteps: 355200 	 Percentage complete 17.760
+Average episode rewards is -91.197 	Total timesteps: 371200 	 Percentage complete 18.560
+Average episode rewards is -90.342 	Total timesteps: 387200 	 Percentage complete 19.360
+Average episode rewards is -102.454 	Total timesteps: 403200 	 Percentage complete 20.160
+Average episode rewards is -101.304 	Total timesteps: 419200 	 Percentage complete 20.960
+Average episode rewards is -98.535 	Total timesteps: 435200 	 Percentage complete 21.760
+Average episode rewards is -96.616 	Total timesteps: 451200 	 Percentage complete 22.560
+Average episode rewards is -86.944 	Total timesteps: 467200 	 Percentage complete 23.360
+Average episode rewards is -99.187 	Total timesteps: 483200 	 Percentage complete 24.160
+Average episode rewards is -90.160 	Total timesteps: 499200 	 Percentage complete 24.960
+Average episode rewards is -93.419 	Total timesteps: 515200 	 Percentage complete 25.760
+Average episode rewards is -85.894 	Total timesteps: 531200 	 Percentage complete 26.560
+Average episode rewards is -76.651 	Total timesteps: 547200 	 Percentage complete 27.360
+Average episode rewards is -71.705 	Total timesteps: 563200 	 Percentage complete 28.160
+Average episode rewards is -64.222 	Total timesteps: 579200 	 Percentage complete 28.960
+Average episode rewards is -45.846 	Total timesteps: 595200 	 Percentage complete 29.760
+Average episode rewards is -55.548 	Total timesteps: 611200 	 Percentage complete 30.560
+Average episode rewards is -63.661 	Total timesteps: 627200 	 Percentage complete 31.360
+Average episode rewards is -45.621 	Total timesteps: 643200 	 Percentage complete 32.160
+Average episode rewards is -42.742 	Total timesteps: 659200 	 Percentage complete 32.960
+Average episode rewards is -37.894 	Total timesteps: 675200 	 Percentage complete 33.760
+Average episode rewards is -33.575 	Total timesteps: 691200 	 Percentage complete 34.560
+Average episode rewards is -35.156 	Total timesteps: 707200 	 Percentage complete 35.360
+Average episode rewards is -21.379 	Total timesteps: 723200 	 Percentage complete 36.160
+Average episode rewards is -25.514 	Total timesteps: 739200 	 Percentage complete 36.960
+Average episode rewards is -11.862 	Total timesteps: 755200 	 Percentage complete 37.760
+Average episode rewards is 3.085 	Total timesteps: 771200 	 Percentage complete 38.560
+Average episode rewards is 12.037 	Total timesteps: 787200 	 Percentage complete 39.360
+Average episode rewards is 17.832 	Total timesteps: 803200 	 Percentage complete 40.160
+Average episode rewards is 19.286 	Total timesteps: 819200 	 Percentage complete 40.960
+Average episode rewards is 53.051 	Total timesteps: 835200 	 Percentage complete 41.760
+Average episode rewards is 72.640 	Total timesteps: 851200 	 Percentage complete 42.560
+Average episode rewards is 68.800 	Total timesteps: 867200 	 Percentage complete 43.360
+Average episode rewards is 90.868 	Total timesteps: 883200 	 Percentage complete 44.160
+Average episode rewards is 76.700 	Total timesteps: 899200 	 Percentage complete 44.960
+Average episode rewards is 103.129 	Total timesteps: 915200 	 Percentage complete 45.760
+Average episode rewards is 99.172 	Total timesteps: 931200 	 Percentage complete 46.560
+Average episode rewards is 110.556 	Total timesteps: 947200 	 Percentage complete 47.360
+Average episode rewards is 112.517 	Total timesteps: 963200 	 Percentage complete 48.160
+Average episode rewards is 108.349 	Total timesteps: 979200 	 Percentage complete 48.960
+Average episode rewards is 111.008 	Total timesteps: 995200 	 Percentage complete 49.760
+Average episode rewards is 126.815 	Total timesteps: 1011200 	 Percentage complete 50.560
+Average episode rewards is 124.665 	Total timesteps: 1027200 	 Percentage complete 51.360
+Average episode rewards is 151.617 	Total timesteps: 1043200 	 Percentage complete 52.160
+Average episode rewards is 149.789 	Total timesteps: 1059200 	 Percentage complete 52.960
+Average episode rewards is 143.298 	Total timesteps: 1075200 	 Percentage complete 53.760
+Average episode rewards is 177.836 	Total timesteps: 1091200 	 Percentage complete 54.560
+Average episode rewards is 149.663 	Total timesteps: 1107200 	 Percentage complete 55.360
+Average episode rewards is 164.250 	Total timesteps: 1123200 	 Percentage complete 56.160
+Average episode rewards is 176.579 	Total timesteps: 1139200 	 Percentage complete 56.960
+Average episode rewards is 163.045 	Total timesteps: 1155200 	 Percentage complete 57.760
+Average episode rewards is 166.500 	Total timesteps: 1171200 	 Percentage complete 58.560
+Average episode rewards is 178.305 	Total timesteps: 1187200 	 Percentage complete 59.360
+Average episode rewards is 171.345 	Total timesteps: 1203200 	 Percentage complete 60.160
+Average episode rewards is 179.574 	Total timesteps: 1219200 	 Percentage complete 60.960
+Average episode rewards is 198.440 	Total timesteps: 1235200 	 Percentage complete 61.760
+Average episode rewards is 197.389 	Total timesteps: 1251200 	 Percentage complete 62.560
+Average episode rewards is 191.200 	Total timesteps: 1267200 	 Percentage complete 63.360
+Average episode rewards is 179.201 	Total timesteps: 1283200 	 Percentage complete 64.160
+Average episode rewards is 189.540 	Total timesteps: 1299200 	 Percentage complete 64.960
+Average episode rewards is 211.084 	Total timesteps: 1315200 	 Percentage complete 65.760
+Average episode rewards is 217.829 	Total timesteps: 1331200 	 Percentage complete 66.560
+Average episode rewards is 196.987 	Total timesteps: 1347200 	 Percentage complete 67.360
+Average episode rewards is 199.357 	Total timesteps: 1363200 	 Percentage complete 68.160
+Average episode rewards is 191.844 	Total timesteps: 1379200 	 Percentage complete 68.960
+Average episode rewards is 205.459 	Total timesteps: 1395200 	 Percentage complete 69.760
+Average episode rewards is 228.477 	Total timesteps: 1411200 	 Percentage complete 70.560
+Average episode rewards is 216.823 	Total timesteps: 1427200 	 Percentage complete 71.360
+Average episode rewards is 213.206 	Total timesteps: 1443200 	 Percentage complete 72.160
+Average episode rewards is 225.089 	Total timesteps: 1459200 	 Percentage complete 72.960
+Average episode rewards is 220.230 	Total timesteps: 1475200 	 Percentage complete 73.760
+Average episode rewards is 212.551 	Total timesteps: 1491200 	 Percentage complete 74.560
+Average episode rewards is 187.903 	Total timesteps: 1507200 	 Percentage complete 75.360
+Average episode rewards is 199.989 	Total timesteps: 1523200 	 Percentage complete 76.160
+Average episode rewards is 206.064 	Total timesteps: 1539200 	 Percentage complete 76.960
+Average episode rewards is 208.912 	Total timesteps: 1555200 	 Percentage complete 77.760
+Average episode rewards is 217.540 	Total timesteps: 1571200 	 Percentage complete 78.560
+Average episode rewards is 212.755 	Total timesteps: 1587200 	 Percentage complete 79.360
+Average episode rewards is 222.203 	Total timesteps: 1603200 	 Percentage complete 80.160
+Average episode rewards is 235.641 	Total timesteps: 1619200 	 Percentage complete 80.960
+Average episode rewards is 224.261 	Total timesteps: 1635200 	 Percentage complete 81.760
+Average episode rewards is 242.896 	Total timesteps: 1651200 	 Percentage complete 82.560
+Average episode rewards is 253.558 	Total timesteps: 1667200 	 Percentage complete 83.360
+Average episode rewards is 241.516 	Total timesteps: 1683200 	 Percentage complete 84.160
+Average episode rewards is 251.272 	Total timesteps: 1699200 	 Percentage complete 84.960
+Average episode rewards is 244.371 	Total timesteps: 1715200 	 Percentage complete 85.760
+Average episode rewards is 273.791 	Total timesteps: 1731200 	 Percentage complete 86.560
+Average episode rewards is 274.800 	Total timesteps: 1747200 	 Percentage complete 87.360
+Average episode rewards is 267.903 	Total timesteps: 1763200 	 Percentage complete 88.160
+Average episode rewards is 256.875 	Total timesteps: 1779200 	 Percentage complete 88.960
+Average episode rewards is 279.530 	Total timesteps: 1795200 	 Percentage complete 89.760
+Average episode rewards is 299.592 	Total timesteps: 1811200 	 Percentage complete 90.560
+Average episode rewards is 286.213 	Total timesteps: 1827200 	 Percentage complete 91.360
+Average episode rewards is 281.445 	Total timesteps: 1843200 	 Percentage complete 92.160
+Average episode rewards is 273.352 	Total timesteps: 1859200 	 Percentage complete 92.960
+Average episode rewards is 272.039 	Total timesteps: 1875200 	 Percentage complete 93.760
+Average episode rewards is 286.561 	Total timesteps: 1891200 	 Percentage complete 94.560
+Average episode rewards is 282.192 	Total timesteps: 1907200 	 Percentage complete 95.360
+Average episode rewards is 273.849 	Total timesteps: 1923200 	 Percentage complete 96.160
+Average episode rewards is 282.355 	Total timesteps: 1939200 	 Percentage complete 96.960
+Average episode rewards is 293.925 	Total timesteps: 1955200 	 Percentage complete 97.760
+Average episode rewards is 288.135 	Total timesteps: 1971200 	 Percentage complete 98.560
+Average episode rewards is 296.327 	Total timesteps: 1987200 	 Percentage complete 99.360

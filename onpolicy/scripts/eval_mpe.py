@@ -129,7 +129,7 @@ def modify_args(
     import yaml
 
     with open(str(model_dir) + "/config.yaml") as f:
-        ydict = yaml.load(f)
+        ydict = yaml.load(f, Loader=yaml.SafeLoader)
 
     print("_" * 50)
     for k, v in ydict.items():
