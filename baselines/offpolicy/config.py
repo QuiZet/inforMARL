@@ -11,7 +11,7 @@ def get_config():
     parser.add_argument(
         "--algorithm_name",
         type=str,
-        default="rmatd3",
+        default="maddpg",
         choices=[
             "rmatd3",
             "rmaddpg",
@@ -76,7 +76,7 @@ def get_config():
     parser.add_argument(
         "--user_name",
         type=str,
-        default="marl",
+        default="utokyo-marl",
         help="[for wandb usage], to specify user's name for "
         "simply collecting training data.",
     )

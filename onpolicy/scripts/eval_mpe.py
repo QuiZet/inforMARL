@@ -59,7 +59,7 @@ def parse_args(args, parser):
         help="Which scenario to run on",
     )
     parser.add_argument("--num_landmarks", type=int, default=3)
-    parser.add_argument("--num_agents", type=int, default=2, help="number of players")
+    parser.add_argument("--num_agents", type=int, default=6, help="number of players")
     parser.add_argument(
         "--num_obstacles", type=int, default=3, help="Number of obstacles"
     )
@@ -214,11 +214,10 @@ def main(args):
             raise NotImplementedError
         from onpolicy.runner.separated.mpe_runner import MPERunner as Runner
 
-    # print_args(config['all_args'])
-
+    print_args(config['all_args'])
     runner = Runner(config)
-    # actor_state_dict = torch.load(str(model_dir) + '/actor.pt')
-    # runner.policy.actor.load_state_dict(actor_state_dict)
+    actor_state_dict = torch.load(str(all_args.model_dir) + '/actor.pt')
+    runner.policy.actor.load_state_dict(actor_state_dict)
     runner.render(True)
 
     # post process

@@ -117,6 +117,21 @@ def parse_args(args, parser):
         "the `simple.py` or `simple_spread.py`",
     )
 
+    parser.add_argument(
+        "--num_good_agents",
+        type=int,
+        default=2,
+        help="Number of good agents",
+    )
+
+    parser.add_argument(
+        "--num_adversaries",
+        type=int,
+        default=1,
+        help="Number of adversaries",
+    )
+
+
     all_args = parser.parse_known_args(args)[0]
 
     return all_args

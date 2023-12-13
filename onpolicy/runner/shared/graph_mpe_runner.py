@@ -462,10 +462,10 @@ class GMPERunner(Runner):
             # print("Average episode rewards is: " +
             # str(np.mean(np.sum(np.array(episode_rewards), axis=0))))
 
-        print(rewards_arr)
-        print(frac_episode_arr)
-        print(success_rates_arr)
-        print(num_collisions_arr)
+        print(f'rewards_arr: {rewards_arr}')
+        print(f'frac_episode_arr: {frac_episode_arr}')
+        print(f'success_rates_arr: {success_rates_arr}')
+        print(f'num_collisions_arr: {num_collisions_arr}')
 
         if not get_metrics:
             if self.all_args.save_gifs:
