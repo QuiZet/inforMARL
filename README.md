@@ -242,3 +242,10 @@ We would love to include more scenarios from the multi-agent particle environmen
 ## License
 
 MIT License
+
+
+
+For running maddpg
+```bash
+python /home/yungisimon/inforMARL/baselines/offpolicy/scripts/train/train_mpe.py --scenario_name "simple_tag" --algorithm_name "maddpg" --env_name "MPE"
+```
