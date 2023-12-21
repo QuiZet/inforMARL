@@ -52,6 +52,7 @@ def make_render_env(all_args: argparse.Namespace):
 
 
 def parse_args(args, parser):
+
     parser.add_argument(
         "--scenario_name",
         type=str,
@@ -105,7 +106,7 @@ def parse_args(args, parser):
         "the `simple.py` or `simple_spread.py`",
     )
 
-    all_args = parser.parse_known_args(args)[0]
+    all_args = parser.parse_args(args)
 
     return all_args
 
@@ -155,10 +156,11 @@ def modify_args(
 
 
 def main(args):
-    # model_dir = 'trained_models/navigation/Navigation/rmappo/wandb/offline-run-20210720_220614-1eqhk4l1/files'
     parser = get_config()
     all_args = parse_args(args, parser)
     all_args = modify_args(all_args.model_dir, all_args)
+    all_args.num_agents = 6
+    all_args.render_episodes = 128
 
     if all_args.algorithm_name == "rmappo" or all_args.algorithm_name == "rmappg":
         assert (
@@ -217,8 +219,9 @@ def main(args):
     print_args(config['all_args'])
     runner = Runner(config)
     actor_state_dict = torch.load(str(all_args.model_dir) + '/actor.pt')
-    runner.policy.actor.load_state_dict(actor_state_dict)
-    runner.render(True)
+    runner.policy.actor.load_state_dict(actor_state_dict)  #This method doesnt exist
+    runner.eval(all_args.eval_episodes)
+    runner.render(False)
 
     # post process
     envs.close()

@@ -4,3 +4,8 @@ __pycache/
 
 #exclude the test results
 results/
+
+playground.ipynb
+
+onpolicy_temp/
+multiagent_temp/

@@ -296,6 +296,8 @@ class SubprocVecEnv(ShareVecEnv):
         for remote in self.remotes:
             remote.send(("reset", None))
         obs = [remote.recv() for remote in self.remotes]
+        #print(f'length of obs list: {len(obs)}')
+        #print(f'obs list: {obs}')
         return np.stack(obs)
 
     def reset_task(self):
