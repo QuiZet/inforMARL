@@ -14,8 +14,8 @@ sys.path.append(os.path.abspath(os.getcwd()))
 
 from utils.utils import print_args, print_box, connected_to_internet
 from onpolicy.config import get_config
-from multiagent.MPE_env import MPEEnv, GraphMPEEnv
-from onpolicy.envs.env_wrappers import (
+from multiagent_temp.MPE_env import MPEEnv, GraphMPEEnv
+from onpolicy_temp.envs.env_wrappers import (
     SubprocVecEnv,
     DummyVecEnv,
     GraphSubprocVecEnv,
@@ -83,13 +83,19 @@ def make_eval_env(all_args: argparse.Namespace):
 
 def parse_args(args, parser):
     parser.add_argument(
+        "--hetero",
+        type=bool,
+        default=False,
+        help="Whether env uses the heterogeneous agents",
+    )
+    parser.add_argument(
         "--scenario_name",
         type=str,
         default="simple_spread",
         help="Which scenario to run on",
     )
     parser.add_argument("--num_landmarks", type=int, default=3)
-    parser.add_argument("--num_agents", type=int, default=4, help="number of players")
+    parser.add_argument("--num_agents", type=int, default=6, help="number of players")
     parser.add_argument(
         "--num_obstacles", type=int, default=3, help="Number of obstacles"
     )
@@ -138,13 +144,13 @@ def parse_args(args, parser):
     parser.add_argument(
         "--num_good_agents",
         type=int,
-        default=3,
+        default=2,
         help="Number of good agents for simple_tag"
     )
     
     parser.add_argument(
         "--num_adversaries",
-        default=1,
+        default=4,
         type=int,
         help="Number of adversary agents for simple_tag"
     )
@@ -275,6 +281,7 @@ def main(args):
 
     # env init
     envs = make_train_env(all_args)
+    #print(f'env.observation_space[0]: {envs.observation_space[0]}')
     eval_envs = make_eval_env(all_args) if all_args.use_eval else None
     num_agents = all_args.num_agents
 
@@ -288,15 +295,15 @@ def main(args):
     }
 
     # run experiments
-    if all_args.share_policy:
+    if all_args.share_policy: #default: True
         if all_args.env_name == "GraphMPE":
-            from onpolicy.runner.shared.graph_mpe_runner import GMPERunner as Runner
+            from onpolicy_temp.runner.shared.graph_mpe_runner import GMPERunner as Runner
         else:
-            from onpolicy.runner.shared.mpe_runner import MPERunner as Runner
+            from onpolicy_temp.runner.shared.mpe_runner import MPERunner as Runner
     else:
         if all_args.env_name == "GraphMPE":
             raise NotImplementedError
-        from onpolicy.runner.separated.mpe_runner import MPERunner as Runner
+        from onpolicy_temp.runner.separated.mpe_runner import MPERunner as Runner
 
     runner = Runner(config)
     if all_args.verbose:

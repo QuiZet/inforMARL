@@ -5,9 +5,10 @@ import numpy as np
 from itertools import chain
 import torch
 from torch.utils.tensorboard import SummaryWriter
+from gym.spaces import Box, Discrete, MultiDiscrete, MultiBinary
 
-from onpolicy.utils.separated_buffer import SeparatedReplayBuffer
-from onpolicy.utils.util import update_linear_schedule
+from onpolicy_temp.utils.separated_buffer import SeparatedReplayBuffer
+from onpolicy_temp.utils.util import update_linear_schedule
 
 
 def _t2n(x):
@@ -67,15 +68,13 @@ class Runner(object):
                 if not os.path.exists(self.save_dir):
                     os.makedirs(self.save_dir)
 
-        from onpolicy.algorithms.mappo import R_MAPPO as TrainAlgo
-        from onpolicy.algorithms.MAPPOPolicy import R_MAPPOPolicy as Policy
+        from onpolicy_temp.algorithms.mappo import R_MAPPO as TrainAlgo
+        from onpolicy_temp.algorithms.MAPPOPolicy import R_MAPPOPolicy as Policy
 
         # from onpolicy.algorithms.r_mappo.r_mappo import R_MAPPO as TrainAlgo
         # from onpolicy.algorithms.r_mappo.algorithm.rMAPPOPolicy import R_MAPPOPolicy as Policy
 
         self.policy = []
-        print(f'self.num_agents: {self.num_agents}')
-        #print(f'self.env.share_observation_space: {self.envs.share_observation_space}')
         for agent_id in range(self.num_agents):
             share_observation_space = (
                 self.envs.share_observation_space[agent_id]
@@ -97,18 +96,25 @@ class Runner(object):
 
         self.trainer = []
         self.buffer = []
+        max_observation_space = Box(low=-np.inf, high=+np.inf, shape=(1,), dtype=np.float32)
+
+        for agent_id in range(self.num_agents):
+            observation_space = self.envs.observation_space[agent_id]
+            if observation_space.shape[0] > max_observation_space.shape[0]:
+                max_observation_space = observation_space
+
         for agent_id in range(self.num_agents):
             # algorithm
             tr = TrainAlgo(self.all_args, self.policy[agent_id], device=self.device)
             # buffer
             share_observation_space = (
                 self.envs.share_observation_space[agent_id]
-                if self.use_centralized_V
+                if self.use_centralized_V #default: True
                 else self.envs.observation_space[agent_id]
             )
             bu = SeparatedReplayBuffer(
                 self.all_args,
-                self.envs.observation_space[agent_id],
+                max_observation_space,
                 share_observation_space,
                 self.envs.action_space[agent_id],
             )
