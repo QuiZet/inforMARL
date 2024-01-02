@@ -2,8 +2,8 @@ import torch
 from torch import Tensor
 from typing import Tuple
 import argparse
-from onpolicy.algorithms.actor_critic import R_Actor, R_Critic
-from onpolicy.utils.util import update_linear_schedule
+from onpolicy_temp.algorithms.actor_critic import R_Actor, R_Critic
+from onpolicy_temp.utils.util import update_linear_schedule
 
 
 class R_MAPPOPolicy:

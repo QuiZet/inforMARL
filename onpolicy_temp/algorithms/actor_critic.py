@@ -2,13 +2,13 @@ import torch
 from torch import Tensor
 import torch.nn as nn
 from typing import Tuple, List
-from onpolicy.algorithms.utils.util import init, check
-from onpolicy.algorithms.utils.cnn import CNNBase
-from onpolicy.algorithms.utils.mlp import MLPBase
-from onpolicy.algorithms.utils.rnn import RNNLayer
-from onpolicy.algorithms.utils.act import ACTLayer
-from onpolicy.algorithms.utils.popart import PopArt
-from onpolicy.utils.util import get_shape_from_obs_space
+from onpolicy_temp.algorithms.utils.util import init, check
+from onpolicy_temp.algorithms.utils.cnn import CNNBase
+from onpolicy_temp.algorithms.utils.mlp import MLPBase
+from onpolicy_temp.algorithms.utils.rnn import RNNLayer
+from onpolicy_temp.algorithms.utils.act import ACTLayer
+from onpolicy_temp.algorithms.utils.popart import PopArt
+from onpolicy_temp.utils.util import get_shape_from_obs_space
 
 
 class R_Actor(nn.Module):

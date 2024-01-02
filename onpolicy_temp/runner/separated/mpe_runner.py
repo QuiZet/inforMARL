@@ -164,7 +164,7 @@ class MPERunner(Runner):
         share_obs = np.array(share_obs)
 
         for agent_id in range(self.num_agents):
-            print(f'self.envs.observation_space[agent_id]: {self.envs.observation_space[agent_id]}')
+            #print(f'self.envs.observation_space[agent_id]: {self.envs.observation_space[agent_id]}')
             #self.envs.share_observation_space[agent_id] == 24
             if not self.use_centralized_V:
                 share_obs = np.array(list(obs[:, agent_id]))
@@ -183,6 +183,7 @@ class MPERunner(Runner):
 
         for agent_id in range(self.num_agents):
             self.trainer[agent_id].prep_rollout()
+            # print(f'obs: {self.buffer[agent_id].obs[step].shape}') -> (32,24) for all agents
             value, action, action_log_prob, rnn_state, rnn_state_critic = self.trainer[
                 agent_id
             ].policy.get_actions(

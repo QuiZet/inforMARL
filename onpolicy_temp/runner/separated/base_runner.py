@@ -73,6 +73,12 @@ class Runner(object):
 
         # from onpolicy.algorithms.r_mappo.r_mappo import R_MAPPO as TrainAlgo
         # from onpolicy.algorithms.r_mappo.algorithm.rMAPPOPolicy import R_MAPPOPolicy as Policy
+        max_observation_space = Box(low=-np.inf, high=+np.inf, shape=(1,), dtype=np.float32)
+
+        for agent_id in range(self.num_agents):
+            observation_space = self.envs.observation_space[agent_id]
+            if observation_space.shape[0] > max_observation_space.shape[0]:
+                max_observation_space = observation_space
 
         self.policy = []
         for agent_id in range(self.num_agents):
@@ -84,7 +90,8 @@ class Runner(object):
             # policy network
             po = Policy(
                 self.all_args,
-                self.envs.observation_space[agent_id],
+                max_observation_space,
+                #self.envs.observation_space[agent_id],
                 share_observation_space,
                 self.envs.action_space[agent_id],
                 device=self.device,
@@ -96,12 +103,6 @@ class Runner(object):
 
         self.trainer = []
         self.buffer = []
-        max_observation_space = Box(low=-np.inf, high=+np.inf, shape=(1,), dtype=np.float32)
-
-        for agent_id in range(self.num_agents):
-            observation_space = self.envs.observation_space[agent_id]
-            if observation_space.shape[0] > max_observation_space.shape[0]:
-                max_observation_space = observation_space
 
         for agent_id in range(self.num_agents):
             # algorithm

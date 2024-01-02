@@ -4,11 +4,11 @@ from typing import Tuple
 import torch
 from torch import Tensor
 import torch.nn as nn
-from onpolicy.algorithms.MAPPOPolicy import R_MAPPOPolicy
-from onpolicy.utils.shared_buffer import SharedReplayBuffer
-from onpolicy.utils.util import get_grad_norm, huber_loss, mse_loss
-from onpolicy.utils.valuenorm import ValueNorm
-from onpolicy.algorithms.utils.util import check
+from onpolicy_temp.algorithms.MAPPOPolicy import R_MAPPOPolicy
+from onpolicy_temp.utils.shared_buffer import SharedReplayBuffer
+from onpolicy_temp.utils.util import get_grad_norm, huber_loss, mse_loss
+from onpolicy_temp.utils.valuenorm import ValueNorm
+from onpolicy_temp.algorithms.utils.util import check
 
 
 class R_MAPPO:
