@@ -245,7 +245,7 @@ MIT License
 
 
 
-For running maddpg
+## For running maddpg
 ```bash
 python /home/yungisimon/inforMARL/baselines/offpolicy/scripts/train/train_mpe.py --scenario_name "simple_tag" --algorithm_name "maddpg" --env_name "MPE"
 ```
@@ -255,6 +255,8 @@ python /home/yungisimon/inforMARL/baselines/offpolicy/scripts/train/train_mpe.py
 SimpleTag.py
         num_good_agents = args.num_good_agents  # 1
         num_adversaries = args.num_adversaries  # 3
+
+**runner separated**
 
 ```bash
 python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_reference" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --n_rollout_threads 1 --num_agents 2 --episode_length 250
@@ -266,12 +268,15 @@ python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scen
 python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_tag" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 1 --num_agents 2 --episode_length 250
 ```
 
-NOTE:
+Note:
 Shared reward have a different returned reward in the multiagend/environment/<class>::step
 This is caused by the shared_reward that changes the reward_n from (3,) in (3,1), which is the size of the expected shared buffer. 
 
-TODO
+**runner shared (save in wandb)**
 
 ```bash
-python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_reference" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --share_policy --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 1 --num_agents 2 --episode_length 250 --use_centralized_V
+python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --share_policy --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 1 --num_agents 2 --episode_length 250 --use_centralized_V --use_wandb
 ```
+
+Note:
+Runner shared pad the observation with zeros at the end of the smaller observations. This is necessary since the observation is used as single matrix.

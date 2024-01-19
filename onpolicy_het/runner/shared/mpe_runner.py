@@ -3,9 +3,10 @@ import numpy as np
 from numpy import ndarray as arr
 from typing import Tuple
 import torch
-from onpolicy.runner.shared.base_runner import Runner
+from onpolicy_het.runner.shared.base_runner import Runner
 import wandb
 import imageio
+from itertools import chain
 
 
 def _t2n(x):
@@ -99,26 +100,58 @@ class MPERunner(Runner):
             if episode % self.eval_interval == 0 and self.use_eval:
                 self.eval(total_num_steps)
 
+
+    def pad_obs_1D(self, obs):
+        ''' Zero padding for the observations. 
+            Zeros are added at the end to fill the gap with the largest observed vector. 
+        '''
+        max_obs_dim = 0
+        for i in range(len(obs[0])):
+            if len(obs[0][i]) > max_obs_dim:
+                max_obs_dim = len(obs[0][i])
+        padded_obs = []
+        for agent_obs in obs:
+            padded_agent_obs = []
+            for obs_dim in agent_obs:
+                if len(obs_dim) < max_obs_dim:
+                    pad_size = max_obs_dim - len(obs_dim)
+                    padded_obs_dim = np.pad(obs_dim, (0, pad_size), mode='constant')
+                    padded_agent_obs.append(padded_obs_dim)
+                else:
+                    padded_agent_obs.append(obs_dim)
+            padded_obs.append(padded_agent_obs)
+        return padded_obs
+
+
     def warmup(self):
         # reset env
         obs = self.envs.reset()
 
-        print(f'self.use_centralized_V:{self.use_centralized_V}')
-        obs = np.stack(obs)
-        print(f'obs:{obs.shape}')
+        #print(f'self.buffer.share_obs:{self.buffer.share_obs.shape}')
+        #print(f'self.buffer.obs:{self.buffer.obs.shape}')
 
+        # 0 padding the observation at the end
+        obs_stack = self.pad_obs_1D(obs)
+        obs_stack = np.stack(obs_stack)
         # replay buffer
         if self.use_centralized_V:
-            share_obs = obs.reshape(self.n_rollout_threads, -1)
-            share_obs = np.expand_dims(share_obs, 1).repeat(self.num_agents, axis=1)
-        else:
-            share_obs = obs
-        print(f'share_obs:{share_obs.shape}')
+            #share_obs = obs.reshape(self.n_rollout_threads, -1)
+            #share_obs = np.expand_dims(share_obs, 1).repeat(self.num_agents, axis=1)
 
-        exit(0)
+            # Create the shared object with the original shape size.
+            share_obs_originalshape = []
+            for o in obs:
+                share_obs_originalshape.append(list(chain(*o)))
+            share_obs_originalshape = np.array(share_obs_originalshape)
+
+            share_obs_originalshape = np.expand_dims(share_obs_originalshape, 1).repeat(self.num_agents, axis=1)
+            share_obs = share_obs_originalshape
+        else:
+            share_obs = obs_stack
 
         self.buffer.share_obs[0] = share_obs.copy()
-        self.buffer.obs[0] = obs.copy()
+        self.buffer.obs[0] = obs_stack.copy()
+
 
     @torch.no_grad()
     def collect(self, step: int) -> Tuple[arr, arr, arr, arr, arr, arr]:
@@ -194,18 +227,29 @@ class MPERunner(Runner):
         masks = np.ones((self.n_rollout_threads, self.num_agents, 1), dtype=np.float32)
         masks[dones == True] = np.zeros(((dones == True).sum(), 1), dtype=np.float32)
 
+
+        # 0 padding the observation at the end
+        obs_stack = self.pad_obs_1D(obs)
+        obs_stack = np.stack(obs_stack)
+        # replay buffer
         if self.use_centralized_V:
-            # obs.shape = [n_rollout_threads, num_agents, state_dim]
-            share_obs = obs.reshape(self.n_rollout_threads, -1)
-            # share_obs.shape = [n_rollout_threads, num_agents * state_dim]
-            share_obs = np.expand_dims(share_obs, 1).repeat(self.num_agents, axis=1)
-            # share_obs.shape = [n_rollout_threads, num_agents, num_agents * state_dim]
+            #share_obs = obs.reshape(self.n_rollout_threads, -1)
+            #share_obs = np.expand_dims(share_obs, 1).repeat(self.num_agents, axis=1)
+
+            # Create the shared object with the original shape size.
+            share_obs_originalshape = []
+            for o in obs:
+                share_obs_originalshape.append(list(chain(*o)))
+            share_obs_originalshape = np.array(share_obs_originalshape)
+
+            share_obs_originalshape = np.expand_dims(share_obs_originalshape, 1).repeat(self.num_agents, axis=1)
+            share_obs = share_obs_originalshape
         else:
-            share_obs = obs
+            share_obs = obs_stack
 
         self.buffer.insert(
             share_obs,
-            obs,
+            obs_stack, #obs,
             rnn_states,
             rnn_states_critic,
             actions,
