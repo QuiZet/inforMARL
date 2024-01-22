@@ -281,6 +281,9 @@ class MPERunner(Runner):
             eval_masks[eval_dones == True] = np.zeros(
                 ((eval_dones == True).sum(), 1), dtype=np.float32
             )
+            # render
+            if self.use_render:
+                image = self.eval_envs.render("rgb_array")[0][0]
 
         eval_episode_rewards = np.array(eval_episode_rewards)
         eval_env_infos = {}

@@ -63,6 +63,10 @@ class MPERunner(Runner):
                 # insert data into buffer
                 self.insert(data)
 
+                # render
+                #if self.use_render:
+                #    image = self.envs.render("rgb_array")[0][0]
+
             # compute return and update network
             self.compute()
             train_infos = self.train()
@@ -168,10 +172,16 @@ class MPERunner(Runner):
         share_obs = np.array(share_obs)
 
         print(f'warmup share_obs:{share_obs.shape}')
-
+        
         for agent_id in range(self.num_agents):
+            print(f'self.buffer[{agent_id}].share_obs[0]:{self.buffer[agent_id].share_obs[0].shape}')
+            print(f'self.buffer[{agent_id}].obs[0]:{self.buffer[agent_id].obs[0].shape}')
             if not self.use_centralized_V:
-                share_obs = np.array(list(obs[:, agent_id]))
+                #share_obs = np.array(list(obs[:, agent_id]))
+                b = [obs[i][agent_id] for i in range(len(obs))]
+                share_obs = np.array(b)
+            print(f'share_obs[{agent_id}]:{share_obs.shape}')
+
             self.buffer[agent_id].share_obs[0] = share_obs.copy()
             print(f'warmup self.buffer.share_obs:{self.buffer[agent_id].share_obs.shape} share_obs[0]:{self.buffer[agent_id].share_obs[0].shape}')
             b = [obs[i][agent_id] for i in range(len(obs))]
@@ -182,8 +192,6 @@ class MPERunner(Runner):
 
         print(f'warmup share_obs:{share_obs.shape}')
         print(f'warmup self.buffer[agent_id].obs:{self.buffer[agent_id].obs.shape}')
-        #exit(0)
-
 
     @torch.no_grad()
     def collect(self, step):
@@ -285,7 +293,10 @@ class MPERunner(Runner):
 
         for agent_id in range(self.num_agents):
             if not self.use_centralized_V:
-                share_obs = np.array(list(obs[:, agent_id]))    # [threads, agent_id, observations] -> [:,agent_id] = [threads, observations]
+                #share_obs = np.array(list(obs[:, agent_id]))    # [threads, agent_id, observations] -> [:,agent_id] = [threads, observations]
+                b = [obs[i][agent_id] for i in range(len(obs))]
+                share_obs = np.array(b)
+
             b = [obs[i][agent_id] for i in range(len(obs))]
             b = np.array(b)
 
@@ -323,8 +334,12 @@ class MPERunner(Runner):
             eval_temp_actions_env = []
             for agent_id in range(self.num_agents):
                 self.trainer[agent_id].prep_rollout()
+
+                b = [eval_obs[i][agent_id] for i in range(len(eval_obs))]
+                b = np.array(b)
+
                 eval_action, eval_rnn_state = self.trainer[agent_id].policy.act(
-                    np.array(list(eval_obs[:, agent_id])),
+                    b, #np.array(list(eval_obs[:, agent_id])),
                     eval_rnn_states[:, agent_id],
                     eval_masks[:, agent_id],
                     deterministic=True,
@@ -384,6 +399,11 @@ class MPERunner(Runner):
                 ((eval_dones == True).sum(), 1), dtype=np.float32
             )
 
+            # render
+            if self.use_render:
+                image = self.eval_envs.render("rgb_array")[0][0]
+
+
         eval_episode_rewards = np.array(eval_episode_rewards)
 
         eval_train_infos = []
@@ -403,6 +423,9 @@ class MPERunner(Runner):
 
     @torch.no_grad()
     def render(self):
+
+        print(f'mpe_runner::render')
+
         all_frames = []
         for episode in range(self.all_args.render_episodes):
             episode_rewards = []
@@ -430,10 +453,14 @@ class MPERunner(Runner):
                 temp_actions_env = []
                 for agent_id in range(self.num_agents):
                     if not self.use_centralized_V:
-                        share_obs = np.array(list(obs[:, agent_id]))
+                        #share_obs = np.array(list(obs[:, agent_id]))
+                        b = [obs[i][agent_id] for i in range(len(obs))]
+                        share_obs = np.array(b)
                     self.trainer[agent_id].prep_rollout()
+                    b = [obs[i][agent_id] for i in range(len(obs))]
+                    b = np.array(b)
                     action, rnn_state = self.trainer[agent_id].policy.act(
-                        np.array(list(obs[:, agent_id])),
+                        b, #np.array(list(obs[:, agent_id])),
                         rnn_states[:, agent_id],
                         masks[:, agent_id],
                         deterministic=True,

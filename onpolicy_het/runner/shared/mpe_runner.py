@@ -67,6 +67,10 @@ class MPERunner(Runner):
                 # insert data into buffer
                 self.insert(data)
 
+                # render
+                #if self.use_render:
+                #    image = self.envs.render("rgb_array")[0][0]
+
             # compute return and update network
             self.compute()
             train_infos = self.train()
@@ -231,6 +235,7 @@ class MPERunner(Runner):
         # 0 padding the observation at the end
         obs_stack = self.pad_obs_1D(obs)
         obs_stack = np.stack(obs_stack)
+
         # replay buffer
         if self.use_centralized_V:
             #share_obs = obs.reshape(self.n_rollout_threads, -1)
@@ -286,8 +291,13 @@ class MPERunner(Runner):
 
         for eval_step in range(self.episode_length):
             self.trainer.prep_rollout()
+
+            # 0 padding the observation at the end
+            eval_obs_stack = self.pad_obs_1D(eval_obs)
+            eval_obs_stack = np.stack(eval_obs_stack)
+
             eval_action, eval_rnn_states = self.trainer.policy.act(
-                np.concatenate(eval_obs),
+                np.concatenate(eval_obs_stack), #np.concatenate(eval_obs),
                 np.concatenate(eval_rnn_states),
                 np.concatenate(eval_masks),
                 deterministic=True,
@@ -333,6 +343,9 @@ class MPERunner(Runner):
             eval_masks[eval_dones == True] = np.zeros(
                 ((eval_dones == True).sum(), 1), dtype=np.float32
             )
+            # render
+            if self.use_render:
+                image = self.eval_envs.render("rgb_array")[0][0]
 
         eval_episode_rewards = np.array(eval_episode_rewards)
         eval_env_infos = {}

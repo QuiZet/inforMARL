@@ -261,21 +261,31 @@ SimpleTag.py
 ```bash
 python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_reference" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --n_rollout_threads 1 --num_agents 2 --episode_length 250
 
-python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_tag" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --n_rollout_threads 1 --num_good_agents 1 --num_adversaries 1 --num_agents 2 --episode_length 250
-
-python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_reference" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --n_rollout_threads 3 --num_agents 2 --episode_length 250
-
-python -u onpolicy_het/scripts/train_mpe.py --project_name "PROJECT_NAME" --scenario_name "simple_tag" --user_name "WANDB_ID" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 1 --num_agents 2 --episode_length 250
+python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 3 --num_agents 4
 ```
 
-Note:
-Shared reward have a different returned reward in the multiagend/environment/<class>::step
-This is caused by the shared_reward that changes the reward_n from (3,) in (3,1), which is the size of the expected shared buffer. 
+with rendering on evaluation (no wandb?)
+```bash
+python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 3 --num_agents 4 --use_render --use_eval
+```
+
+Change the n_rollow_threads number to increase the number of threads executed.  
+Add **--use_centralized_V --use_dones False --use_wandb** as additional options, such as log on wandb.  
+
+Note:  
+Shared reward have a different returned reward in the multiagend/environment/<class>::step  
+This is caused by the shared_reward that changes the reward_n from (3,) in (3,1), which is the size of the expected shared buffer.   
+
 
 **runner shared (save in wandb)**
 
 ```bash
-python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --use_dones False --share_policy --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 1 --num_agents 2 --episode_length 250 --use_centralized_V --use_wandb
+python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 3 --num_agents 4 --share_policy --use_centralized_V
+```
+
+with rendering on evaluation (no wandb?)
+```bash
+python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 3 --num_agents 4 --share_policy --use_centralized_V --use_render --use_eval # --use_dones False --use_wandb
 ```
 
 Note:

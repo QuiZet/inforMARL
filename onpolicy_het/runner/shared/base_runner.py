@@ -171,6 +171,8 @@ class Runner(object):
 
     def save(self):
         """Save policy's actor and critic networks."""
+        if self.use_render:
+            return
         policy_actor = self.trainer.policy.actor
         torch.save(policy_actor.state_dict(), str(self.save_dir) + "/actor.pt")
         policy_critic = self.trainer.policy.critic
@@ -237,6 +239,8 @@ class Runner(object):
         total_num_steps: (int)
             total number of training env steps.
         """
+        if self.use_render:
+            return
         for k, v in train_infos.items():
             if self.use_wandb:
                 wandb.log({k: v}, step=total_num_steps)
@@ -251,6 +255,8 @@ class Runner(object):
         total_num_steps: (int)
             total number of training env steps.
         """
+        if self.use_render:
+            return
         for k, v in env_infos.items():
             if len(v) > 0:
                 if self.use_wandb:

@@ -159,6 +159,8 @@ class Runner(object):
         return train_infos
 
     def save(self):
+        if self.use_render:
+            return
         for agent_id in range(self.num_agents):
             policy_actor = self.trainer[agent_id].policy.actor
             torch.save(
@@ -183,6 +185,8 @@ class Runner(object):
             self.policy[agent_id].critic.load_state_dict(policy_critic_state_dict)
 
     def log_train(self, train_infos, total_num_steps):
+        if self.use_render:
+            return
         for agent_id in range(self.num_agents):
             for k, v in train_infos[agent_id].items():
                 agent_k = "agent%i/" % agent_id + k
@@ -192,6 +196,8 @@ class Runner(object):
                     self.writter.add_scalars(agent_k, {agent_k: v}, total_num_steps)
 
     def log_env(self, env_infos, total_num_steps):
+        if self.use_render:
+            return
         for k, v in env_infos.items():
             if len(v) > 0:
                 if self.use_wandb:

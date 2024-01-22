@@ -1,6 +1,6 @@
-from multiagent.custom_scenarios import load
-from multiagent.environment import MultiAgentPPOEnv as MultiAgentEnv
-from multiagent.environment import MultiAgentGraphEnv
+from multiagent_het.custom_scenarios import load
+from multiagent_het.environment import MultiAgentPPOEnv as MultiAgentEnv
+from multiagent_het.environment import MultiAgentGraphEnv
 
 # from onpolicy.envs.mpe.scenarios import load
 # from onpolicy.envs.mpe.environment import MultiAgentEnv
