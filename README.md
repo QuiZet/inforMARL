@@ -269,6 +269,10 @@ with rendering on evaluation (no wandb?)
 python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 3 --num_agents 4 --use_render --use_eval
 ```
 
+**Note**
+The renderer requires *pip install pyglet==1.5.27*. The error message may be corrupted with a python version 3.10.9 or older. Version 2.x or later of pyglet may cause the following error message:  
+*NameError: name 'glPushMatrix' is not defined*  
+
 Change the n_rollow_threads number to increase the number of threads executed.  
 Add **--use_centralized_V --use_dones False --use_wandb** as additional options, such as log on wandb.  
 

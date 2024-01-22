@@ -300,7 +300,7 @@ class MultiAgentBaseEnv(gym.Env):
                 # import rendering only if we need it
                 # (and don't import for headless machines)
                 # from gym.envs.classic_control import rendering
-                from multiagent import rendering
+                from multiagent_het import rendering
 
                 self.viewers[i] = rendering.Viewer(700, 700)
 
