@@ -752,15 +752,21 @@ def graph_config(args, parser):
 
     if all_args.auto_mini_batch_size:
         # for recurrent generator only
+        print(f'(all_args.n_rollout_threads * all_args.episode_length * all_args.num_agents):{(all_args.n_rollout_threads * all_args.episode_length * all_args.num_agents)}')
+        print(f'all_args.target_mini_batch_size:{all_args.target_mini_batch_size}')
         num_mini_batch = (
             all_args.n_rollout_threads * all_args.episode_length * all_args.num_agents
         ) // (all_args.target_mini_batch_size)
+
+        print(f'num_mini_batch:{num_mini_batch}')
+        print(f'all_args.data_chunk_length:{all_args.data_chunk_length}')
         new_batch_size = (
             (all_args.n_rollout_threads * all_args.episode_length * all_args.num_agents)
             // num_mini_batch
             // all_args.data_chunk_length
             * all_args.data_chunk_length
         )
+
         setattr(all_args, "num_mini_batch", num_mini_batch)
         print("_" * 50)
         print(f"Overriding num_mini_batch to {num_mini_batch}")

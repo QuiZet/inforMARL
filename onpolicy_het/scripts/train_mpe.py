@@ -159,7 +159,7 @@ def main(args):
     parser = get_config()
     all_args, parser = parse_args(args, parser)
     if all_args.env_name == "GraphMPE":
-        from onpolicy.config import graph_config
+        from onpolicy_het.config import graph_config
 
         all_args, parser = graph_config(args, parser)
 
