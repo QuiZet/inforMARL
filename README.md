@@ -295,14 +295,8 @@ python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenari
 Note:
 Runner shared pad the observation with zeros at the end of the smaller observations. This is necessary since the observation is used as single matrix.
 
-
+```bash
 python -u onpolicy_het/scripts/train_mpe.py --project_name "informarl" --scenario_name "simple_tag" --user_name "utokyo-marl" --env_name "MPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --collaborative True --max_speed 2 --n_rollout_threads 3 --num_good_agents 1 --num_adversaries 3 --num_agents 4 --share_policy_no --use_centralized_V_no --use_render --use_eval --use_wandb_no
-
-
-
-
-
-
 
 python -u onpolicy_het/scripts/train_mpe.py --use_valuenorm --use_popart --project_name "informarl" --env_name "GraphMPE" --algorithm_name "rmappo" --seed 0 --experiment_name "informarl" --scenario_name "navigation_graph" --num_agents 3 --collision_rew 5 --n_training_threads 1 --n_rollout_threads 128 --num_mini_batch 1 --episode_length 25 --num_env_steps 2000000 --ppo_epoch 10 --use_ReLU --gain 0.01 --lr 7e-4 --critic_lr 7e-4 --user_name "WANDB_USER_ID" --use_cent_obs "False" --graph_feat_type "relative" --auto_mini_batch_size --target_mini_batch_size 128 --share_policy
 
@@ -319,3 +313,4 @@ python -u onpolicy_het/scripts/train_mpe.py --use_valuenorm --use_popart --proje
 
 python multiagent_het/custom_scenarios/navigation_graph.py 
 
+```
