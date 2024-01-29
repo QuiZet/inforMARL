@@ -1036,7 +1036,10 @@ class GraphDummyVecEnv(ShareVecEnv):
 
     def step_wait(self):
         results = [env.step(a) for (a, env) in zip(self.actions, self.envs)]
-        obs, ag_ids, node_obs, adj, rews, dones, infos = map(np.array, zip(*results))
+        #obs, ag_ids, node_obs, adj, rews, dones, infos = map(np.array, zip(*results))
+        obs, ag_ids, node_obs, adj, rews, dones, infos = zip(*results)
+        obs = list(obs) # solve the tuple assignment issue making it a mutable list
+        ag_ids, node_obs, adj, rews, dones, infos = map(np.array, [ag_ids, node_obs, adj, rews, dones, infos])
 
         for i, done in enumerate(dones):
             if "bool" in done.__class__.__name__:
@@ -1050,7 +1053,24 @@ class GraphDummyVecEnv(ShareVecEnv):
         return obs, ag_ids, node_obs, adj, rews, dones, infos
 
     def reset(self):
+        print(f'env_wrapper:self.envs:{self.envs}')
+        for env in self.envs:
+            print(f'env:{env}')
+            env.reset()
+            print('-----------')
         results = [env.reset() for env in self.envs]
+
+        obs, ag_id, node_obs, adj = zip(*results)
+        obs = list(obs) # solve the tuple assignment issue making it a mutable list
+        ag_id, node_obs, adj = map(np.array, [ag_id, node_obs, adj])
+        return obs, ag_id, node_obs, adj
+
+
+        exit(0)
+        print(f'env_wrapper results:{results}')
+        import traceback
+        traceback.print_stack()        
+        exit(0)
         obs, ag_id, node_obs, adj = map(np.array, zip(*results))
         return obs, ag_id, node_obs, adj
 
@@ -1125,7 +1145,7 @@ class GraphSubprocVecEnv(ShareVecEnv):
         self.waiting = False
         obs, ag_ids, node_obs, adj, rews, dones, infos = zip(*results)
         return (
-            np.stack(obs),
+            obs, #np.stack(obs),
             np.stack(ag_ids),
             np.stack(node_obs),
             np.stack(adj),
@@ -1139,7 +1159,8 @@ class GraphSubprocVecEnv(ShareVecEnv):
             remote.send(("reset", None))
         results = [remote.recv() for remote in self.remotes]
         obs, ag_ids, node_obs, adj = zip(*results)
-        return (np.stack(obs), np.stack(ag_ids), np.stack(node_obs), np.stack(adj))
+        #return (np.stack(obs), np.stack(ag_ids), np.stack(node_obs), np.stack(adj))
+        return (obs, np.stack(ag_ids), np.stack(node_obs), np.stack(adj))
 
     def reset_task(self):
         for remote in self.remotes:

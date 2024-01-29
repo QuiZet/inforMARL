@@ -117,7 +117,7 @@ class SeparatedReplayBuffer(object):
         self.actions[self.step] = actions.copy()
         self.action_log_probs[self.step] = action_log_probs.copy()
         self.value_preds[self.step] = value_preds.copy()
-        # fix the issue of having the rewards of shape (3,) with the self.rewards (3,1) when the reward is not shared
+        # fix the issue of having the rewards of shape (1,3,) with the self.rewards (1,3,1) when the reward is not shared
         self.rewards[self.step] = rewards.copy() if self.rewards[self.step].shape == rewards.shape else np.expand_dims(rewards, axis=1) # rewards.copy()
         self.masks[self.step + 1] = masks.copy()
         if bad_masks is not None:

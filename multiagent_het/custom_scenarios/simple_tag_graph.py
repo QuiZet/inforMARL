@@ -67,7 +67,7 @@ class Scenario(BaseScenario):
         # add landmarks
         world.landmarks = [Landmark() for i in range(num_landmarks)]
         for i, landmark in enumerate(world.landmarks):
-            print(f'make_world::agent:{i}')
+            print(f'make_world::landmark:{i}')
             landmark.id = i
             landmark.name = f"landmark {i}"
             landmark.collide = True
@@ -79,6 +79,7 @@ class Scenario(BaseScenario):
         # add obstacles
         world.obstacles = [Landmark() for i in range(self.num_obstacles)]
         for i, obstacle in enumerate(world.obstacles):
+            print(f'make_world::obstacle:{i}')
             obstacle.id = i
             obstacle.name = f"obstacle {i}"
             obstacle.collide = True
@@ -391,15 +392,15 @@ class Scenario(BaseScenario):
 
         """
         num_entities = len(world.entities)
-        print(f'num_entities:{num_entities}')
-        for i, entity in enumerate(world.entities):
-            print(f'entity[{i}]:{entity.id} - {entity.name}')
+        #print(f'num_entities:{num_entities}')
+        #for i, entity in enumerate(world.entities):
+        #    print(f'entity[{i}]:{entity.id} - {entity.name}')
 
         # node observations
         node_obs = []
         if world.graph_feat_type == "global":
             for i, entity in enumerate(world.entities):
-                print(f'entity:{entity}')
+                #print(f'entity:{entity}')
                 node_obs_i = self._get_entity_feat_global(entity, world)
                 node_obs.append(node_obs_i)
         elif world.graph_feat_type == "relative":
@@ -407,7 +408,7 @@ class Scenario(BaseScenario):
                 node_obs_i = self._get_entity_feat_relative(agent, entity, world)
                 node_obs.append(node_obs_i)
 
-        print(f'node_obs:{node_obs}')
+        #print(f'node_obs:{node_obs}')
         node_obs = np.array(node_obs)
         adj = world.cached_dist_mag
 
@@ -476,7 +477,6 @@ class Scenario(BaseScenario):
         """
         pos = entity.state.p_pos
         vel = entity.state.p_vel
-        print(f'entity:{entity.name} {entity.id}')
 
         if "agent" in entity.name:
             #goal_pos = world.get_entity("landmark", entity.id).state.p_pos
@@ -491,7 +491,6 @@ class Scenario(BaseScenario):
         else:
             raise ValueError(f"{entity.name} not supported")
 
-        print(f'vel, pos, goal_pos, entity_type:{vel} {pos} {goal_pos} {entity_type}')
         return np.hstack([vel, pos, goal_pos, entity_type])
 
     def _get_entity_feat_relative(

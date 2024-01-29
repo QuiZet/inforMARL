@@ -3,9 +3,10 @@ import numpy as np
 from numpy import ndarray as arr
 from typing import Tuple
 import torch
-from onpolicy.runner.shared.base_runner import Runner
+from onpolicy_het.runner.shared.base_runner import Runner
 import wandb
 import imageio
+from itertools import chain
 
 
 def _t2n(x):
@@ -104,14 +105,51 @@ class GMPERunner(Runner):
             if episode % self.eval_interval == 0 and self.use_eval:
                 self.eval(total_num_steps)
 
+    def pad_obs_1D(self, obs):
+        ''' Zero padding for the observations. 
+            Zeros are added at the end to fill the gap with the largest observed vector. 
+        '''
+        max_obs_dim = 0
+        for i in range(len(obs[0])):
+            if len(obs[0][i]) > max_obs_dim:
+                max_obs_dim = len(obs[0][i])
+        padded_obs = []
+        for agent_obs in obs:
+            padded_agent_obs = []
+            for obs_dim in agent_obs:
+                if len(obs_dim) < max_obs_dim:
+                    pad_size = max_obs_dim - len(obs_dim)
+                    padded_obs_dim = np.pad(obs_dim, (0, pad_size), mode='constant')
+                    padded_agent_obs.append(padded_obs_dim)
+                else:
+                    padded_agent_obs.append(obs_dim)
+            padded_obs.append(padded_agent_obs)
+        return padded_obs
+
     def warmup(self):
         # reset env
         obs, agent_id, node_obs, adj = self.envs.reset()
+        # obs is expected to be a list
+        obs_stack = self.pad_obs_1D(obs)
+        #for i in range(len(obs)):
+        #    for j in range(len(obs[i])):
+        #        print(f'i:{i}/{j} obs:{obs[i][j].shape}')
+        obs_stack = np.array(obs_stack)
+
+        print(f'graph_mpe_runner self.use_centralized_V:{self.use_centralized_V}')
 
         # replay buffer
         if self.use_centralized_V:
+
+            # Create the shared object with the original shape size.
+            share_obs_originalshape = []
+            for o in obs:
+                share_obs_originalshape.append(list(chain(*o)))
+            share_obs_originalshape = np.array(share_obs_originalshape)
+
             # (n_rollout_threads, n_agents, feats) -> (n_rollout_threads, n_agents*feats)
-            share_obs = obs.reshape(self.n_rollout_threads, -1)
+            #share_obs = obs.reshape(self.n_rollout_threads, -1)
+            share_obs = share_obs_originalshape.reshape(self.n_rollout_threads, -1)
             # (n_rollout_threads, n_agents*feats) -> (n_rollout_threads, n_agents, n_agents*feats)
             share_obs = np.expand_dims(share_obs, 1).repeat(self.num_agents, axis=1)
             # (n_rollout_threads, n_agents, 1) -> (n_rollout_threads, n_agents*1)
@@ -124,8 +162,10 @@ class GMPERunner(Runner):
             share_obs = obs
             share_agent_id = agent_id
 
+        print(f'graph_mpe_runner shape:{self.buffer.share_obs[0].shape} {share_obs.shape}')
+
         self.buffer.share_obs[0] = share_obs.copy()
-        self.buffer.obs[0] = obs.copy()
+        self.buffer.obs[0] = obs_stack.copy() #obs.copy()
         self.buffer.node_obs[0] = node_obs.copy()
         self.buffer.adj[0] = adj.copy()
         self.buffer.agent_id[0] = agent_id.copy()
@@ -213,11 +253,23 @@ class GMPERunner(Runner):
         masks = np.ones((self.n_rollout_threads, self.num_agents, 1), dtype=np.float32)
         masks[dones == True] = np.zeros(((dones == True).sum(), 1), dtype=np.float32)
 
+        # 0 padding the observation at the end
+        obs_stack = self.pad_obs_1D(obs)
+        obs_stack = np.stack(obs_stack)
+
         # if centralized critic, then shared_obs is concatenation of obs from all agents
         if self.use_centralized_V:
             # TODO stack agent_id as well for agent specific information
             # (n_rollout_threads, n_agents, feats) -> (n_rollout_threads, n_agents*feats)
-            share_obs = obs.reshape(self.n_rollout_threads, -1)
+            #share_obs = obs.reshape(self.n_rollout_threads, -1)
+
+            # Create the shared object with the original shape size.
+            share_obs_originalshape = []
+            for o in obs:
+                share_obs_originalshape.append(list(chain(*o)))
+            share_obs_originalshape = np.array(share_obs_originalshape)
+            
+            share_obs = share_obs_originalshape.reshape(self.n_rollout_threads, -1)
             # (n_rollout_threads, n_agents*feats) -> (n_rollout_threads, n_agents, n_agents*feats)
             share_obs = np.expand_dims(share_obs, 1).repeat(self.num_agents, axis=1)
             # (n_rollout_threads, n_agents, 1) -> (n_rollout_threads, n_agents*1)
@@ -227,12 +279,12 @@ class GMPERunner(Runner):
                 self.num_agents, axis=1
             )
         else:
-            share_obs = obs
+            share_obs = obs_stack# obs
             share_agent_id = agent_id
 
         self.buffer.insert(
             share_obs,
-            obs,
+            obs_stack, #obs,
             node_obs,
             adj,
             agent_id,
