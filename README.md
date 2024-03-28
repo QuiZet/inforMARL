@@ -1,6 +1,6 @@
 <div align="center">
 
-#Fork of InforMARL for research
+**Fork of InforMARL for research**
 
 **Scalable Multi-Agent Reinforcement Learning through Intelligent Information Aggregation** 
 
