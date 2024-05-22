@@ -29,33 +29,33 @@ def train():
             dones = next_obs_tuple[2]
             truncations = next_obs_tuple[3]
             infos = next_obs_tuple[4]
-            
+
             next_obs = {agent: torch.tensor(next_obs[agent], dtype=torch.float32) for agent in agents}
             print(f'Next observations: {next_obs}')
             print(f'Type of next observations: {type(next_obs)}')
 
+            rollouts = []
             for agent in agents:
                 if not done[agent] and not dones[agent] and not truncations[agent]:
-                    rollouts = {
+                    rollouts.append({
                         'obs': torch.tensor(obs[agent], dtype=torch.float32),
-                        'actions': torch.tensor([actions[agent]], dtype=torch.int64),
-                        'rewards': [rewards[agent]],  # Ensure rewards is a list
-                        'masks': [not dones[agent]],  # Ensure masks is a list
-                        'next_obs': next_obs[agent],
-                        'old_action_log_probs': policies[agent].model.get_action(torch.tensor(obs[agent], dtype=torch.float32))[1]
-                    }
-                    print(f"Debug: Rollouts - obs: {rollouts['obs']}, actions: {rollouts['actions']}, rewards: {rollouts['rewards']}, masks: {rollouts['masks']}, next_obs: {rollouts['next_obs']}")
+                        'actions': torch.tensor([actions[agent]]),
+                        'rewards': [rewards[agent]],
+                        'masks': [True],
+                        'next_obs': torch.tensor(next_obs[agent], dtype=torch.float32)
+                    })
+
+            # Debug: Display the collected rollouts
+            print("Debug: Collected rollouts")
+            for r in rollouts:
+                print(f"obs: {r['obs'].shape}, actions: {r['actions'].shape}, rewards: {r['rewards']}, masks: {r['masks']}, next_obs: {r['next_obs'].shape}")
+
+            for agent in agents:
+                if not done[agent] and not dones[agent] and not truncations[agent]:
                     policies[agent].update(rollouts)
 
             obs = next_obs
             done = dones
-            for agent in agents:
-                episode_rewards[agent] += rewards[agent]
-
-        total_episode_reward = sum(episode_rewards.values())
-        print(f'Episode {episode}, Total Reward: {total_episode_reward}')
-        initial_obs_tuple = env.reset()
-        initial_obs = initial_obs_tuple[0]
 
 if __name__ == "__main__":
     train()

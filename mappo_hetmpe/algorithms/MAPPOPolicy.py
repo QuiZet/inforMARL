@@ -52,12 +52,22 @@ class MAPPOPolicy:
         
         batch_size = obs.size(0)
         mini_batch_size = max(1, batch_size // self.num_mini_batch)
+        
+        # Ensure the number of mini-batches does not exceed the batch size
+        num_mini_batches = min(self.num_mini_batch, batch_size)
+        mini_batch_size = max(1, batch_size // num_mini_batches)
+        
         permutation = torch.randperm(batch_size)
         
-        print(f"Debug: batch_size: {batch_size}, mini_batch_size: {mini_batch_size}")
+        print(f"Debug: batch_size: {batch_size}, mini_batch_size: {mini_batch_size}, num_mini_batches: {num_mini_batches}")
+        print(f"Debug: permutation: {permutation}")
         
         for start in range(0, batch_size, mini_batch_size):
-            end = start + mini_batch_size
-            print(f"Debug: start: {start}, end: {end}, permutation: {permutation[start:end]}")
+            end = min(start + mini_batch_size, batch_size)
+            print(f"Debug: start: {start}, end: {end}, current_permutation: {permutation[start:end]}")
+            
+            if end > batch_size:
+                print(f"Debug: Trying to access end index {end} which is out of bounds for batch size {batch_size}")
+                break
             
             yield obs[permutation[start:end]], actions[permutation[start:end]], returns[permutation[start:end]], advantages[permutation[start:end]], masks[permutation[start:end]]
