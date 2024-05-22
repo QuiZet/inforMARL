@@ -16,35 +16,50 @@ class MAPPOPolicy:
         self.entropy_coef = entropy_coef
 
     def update(self, rollouts):
-        obs = rollouts['obs']
-        actions = rollouts['actions']
-        rewards = rollouts['rewards']
-        masks = rollouts['masks']
-        next_value = self.model.critic(rollouts['next_obs']).detach()
+        # Separate rollouts by agent type to handle different observation sizes
+        adversary_rollouts = [r for r in rollouts if 'adversary' in r['obs'].keys()]
+        agent_rollouts = [r for r in rollouts if 'agent' in r['obs'].keys()]
 
-        returns = compute_returns(next_value, rewards, masks, self.gamma)
-        returns = torch.tensor(returns)  # Convert returns to a tensor
-        masks = torch.tensor(masks)  # Convert masks to a tensor
-        advantages = returns - self.model.critic(obs).detach()
+        def process_rollouts(rollouts):
+            obs = torch.stack([r['obs'] for r in rollouts])
+            actions = torch.stack([r['actions'] for r in rollouts])
+            rewards = [r['rewards'][0] for r in rollouts]
+            masks = [r['masks'][0] for r in rollouts]
+            next_obs = torch.stack([r['next_obs'] for r in rollouts])
+            
+            rewards = torch.tensor(rewards, dtype=torch.float32)
+            masks = torch.tensor(masks, dtype=torch.float32)
 
-        for _ in range(self.ppo_epoch):
-            data_generator = self._mini_batch_generator(obs, actions, returns, advantages, masks)
+            next_value = self.model.critic(next_obs).detach()
+            returns = compute_returns(next_value, rewards, masks, self.gamma)
+            returns = torch.tensor(returns, dtype=torch.float32)  # Convert returns to a tensor
 
-            for sample in data_generator:
-                obs_batch, actions_batch, return_batch, adv_batch, mask_batch = sample
+            advantages = returns - self.model.critic(obs).detach()
 
-                values, action_log_probs, dist_entropy = self.model.evaluate_actions(obs_batch, actions_batch)
+            for _ in range(self.ppo_epoch):
+                data_generator = self._mini_batch_generator(obs, actions, returns, advantages, masks)
 
-                ratio = torch.exp(action_log_probs - rollouts['old_action_log_probs'])
-                surr1 = ratio * adv_batch
-                surr2 = torch.clamp(ratio, 1.0 - self.clip_param, 1.0 + self.clip_param) * adv_batch
+                for sample in data_generator:
+                    obs_batch, actions_batch, return_batch, adv_batch, mask_batch = sample
 
-                action_loss = -torch.min(surr1, surr2).mean()
-                value_loss = (return_batch - values).pow(2).mean()
+                    values, action_log_probs, dist_entropy = self.model.evaluate_actions(obs_batch, actions_batch)
 
-                self.optimizer.zero_grad()
-                (value_loss * self.value_loss_coef + action_loss - dist_entropy * self.entropy_coef).backward()
-                self.optimizer.step()
+                    ratio = torch.exp(action_log_probs - rollouts['old_action_log_probs'])
+                    surr1 = ratio * adv_batch
+                    surr2 = torch.clamp(ratio, 1.0 - self.clip_param, 1.0 + self.clip_param) * adv_batch
+
+                    action_loss = -torch.min(surr1, surr2).mean()
+                    value_loss = (return_batch - values).pow(2).mean()
+
+                    self.optimizer.zero_grad()
+                    (value_loss * self.value_loss_coef + action_loss - dist_entropy * self.entropy_coef).backward()
+                    self.optimizer.step()
+        
+        # Process rollouts for adversaries and agents separately
+        if adversary_rollouts:
+            process_rollouts(adversary_rollouts)
+        if agent_rollouts:
+            process_rollouts(agent_rollouts)
 
     def _mini_batch_generator(self, obs, actions, returns, advantages, masks):
         print("Debug: Entering _mini_batch_generator")

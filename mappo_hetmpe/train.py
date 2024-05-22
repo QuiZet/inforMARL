@@ -16,10 +16,12 @@ def train():
 
     num_episodes = 1000
     for episode in range(num_episodes):
+        print(f"\nStarting episode {episode}")
         obs = initial_obs
         episode_rewards = {agent: 0 for agent in agents}
 
         done = {agent: False for agent in agents}
+        rollouts = []  # Collect rollouts for all agents
         while not all(done.values()):
             actions = {agent: policies[agent].model.get_action(torch.tensor(obs[agent], dtype=torch.float32))[0] for agent in agents if not done[agent]}
             actions = {agent: int(actions[agent]) for agent in actions}  # Convert actions to int for discrete action space
@@ -30,32 +32,39 @@ def train():
             truncations = next_obs_tuple[3]
             infos = next_obs_tuple[4]
 
-            next_obs = {agent: torch.tensor(next_obs[agent], dtype=torch.float32) for agent in agents}
+            next_obs = {agent: torch.tensor(next_obs[agent], dtype=torch.float32) for agent in agents if agent in next_obs}
             print(f'Next observations: {next_obs}')
             print(f'Type of next observations: {type(next_obs)}')
 
-            rollouts = []
             for agent in agents:
+                if agent not in next_obs:
+                    print(f"Warning: No next observation for {agent}")
+                    continue  # Skip this agent if no next observation is available
                 if not done[agent] and not dones[agent] and not truncations[agent]:
                     rollouts.append({
-                        'obs': torch.tensor(obs[agent], dtype=torch.float32),
-                        'actions': torch.tensor([actions[agent]]),
-                        'rewards': [rewards[agent]],
-                        'masks': [True],
-                        'next_obs': torch.tensor(next_obs[agent], dtype=torch.float32)
+                        'obs': {agent: torch.tensor(obs[agent], dtype=torch.float32).clone().detach()},
+                        'actions': {agent: torch.tensor([actions[agent]]).clone().detach()},
+                        'rewards': {agent: [rewards[agent]]},
+                        'masks': {agent: [True]},
+                        'next_obs': {agent: torch.tensor(next_obs[agent], dtype=torch.float32).clone().detach()}
                     })
 
-            # Debug: Display the collected rollouts
-            print("Debug: Collected rollouts")
-            for r in rollouts:
-                print(f"obs: {r['obs'].shape}, actions: {r['actions'].shape}, rewards: {r['rewards']}, masks: {r['masks']}, next_obs: {r['next_obs'].shape}")
-
-            for agent in agents:
-                if not done[agent] and not dones[agent] and not truncations[agent]:
+            # Update the policy for each agent after collecting sufficient rollouts
+            if len(rollouts) >= 10:  # Ensure a reasonable number of rollouts
+                print(f"Updating policies with {len(rollouts)} rollouts")
+                for agent in agents:
                     policies[agent].update(rollouts)
+                rollouts = []  # Clear rollouts after update
 
             obs = next_obs
             done = dones
+            print(f"Done status: {done}")
+
+        # Reset the environment at the end of each episode
+        initial_obs_tuple = env.reset()
+        initial_obs = initial_obs_tuple[0]
+        print(f"Reset environment for next episode. Initial observations: {initial_obs}")
 
 if __name__ == "__main__":
     train()
+
