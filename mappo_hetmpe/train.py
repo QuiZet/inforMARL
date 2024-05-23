@@ -2,7 +2,14 @@ import torch
 from algorithms.mappo import MAPPO, make_env
 from algorithms.MAPPOPolicy import MAPPOPolicy
 
+import wandb
+import argparse
+
 def train():
+    
+    #Initialize wandb
+    wandb.init(project="mappo_hetmpe", entity="yungisimon")
+    
     env = make_env()
     initial_obs_tuple = env.reset()
     initial_obs = initial_obs_tuple[0]  # Extract the actual observations from the tuple
@@ -33,8 +40,8 @@ def train():
             infos = next_obs_tuple[4]
 
             next_obs = {agent: torch.tensor(next_obs[agent], dtype=torch.float32) for agent in agents if agent in next_obs}
-            print(f'Next observations: {next_obs}')
-            print(f'Type of next observations: {type(next_obs)}')
+            #print(f'Next observations: {next_obs}')
+            #print(f'Type of next observations: {type(next_obs)}')
 
             for agent in agents:
                 if agent not in next_obs:
@@ -59,11 +66,30 @@ def train():
             obs = next_obs
             done = dones
             print(f"Done status: {done}")
+            
+            # Update episode rewards
+            for agent in agents:
+                episode_rewards[agent] += rewards.get(agent, 0)
 
+
+        # Log metrics to wandb
+        wandb.log({f"episode_reward_{agent}": reward for agent, reward in episode_rewards.items()})
+        wandb.log({"episode": episode})
+        
+        # Print episode summary
+        print(f"Episode {episode} summary:")
+        for agent, reward in episode_rewards.items():
+            print(f"  Agent {agent} reward: {reward}")
+        
         # Reset the environment at the end of each episode
         initial_obs_tuple = env.reset()
         initial_obs = initial_obs_tuple[0]
-        print(f"Reset environment for next episode. Initial observations: {initial_obs}")
+        #print(f"Reset environment for next episode. Initial observations: {initial_obs}")
+
+    # Save the final model
+    for agent, policy in policies.items():
+        torch.save(policy.model.state_dict(), f"{agent}_policy_model.pth")
+        wandb.save(f"{agent}_policy_model.pth")
 
 if __name__ == "__main__":
     train()
