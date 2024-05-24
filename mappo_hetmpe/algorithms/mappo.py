@@ -43,7 +43,8 @@ class MAPPO(nn.Module):
         return value, action_log_probs, dist_entropy
 
 def make_env():
-    return simple_tag_v3.parallel_env()
+    return simple_tag_v3.parallel_env(render_mode='rgb_array')
+    #return simple_tag_v3.parallel_env()
 
 def compute_returns(next_value, rewards, masks, gamma=0.99): 
 #Masks used to handle variable episode lengths (premature ends due to truncation or done)

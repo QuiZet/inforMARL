@@ -15,6 +15,9 @@ class MAPPOPolicy:
         self.value_loss_coef = value_loss_coef
         self.entropy_coef = entropy_coef
 
+    def load_model(self, path):
+        self.model.load_state_dict(torch.load(path))
+    
     def update(self, rollouts):
         # Separate rollouts by agent type to handle different observation sizes
         adversary_rollouts = [r for r in rollouts if 'adversary' in r['obs'].keys()]
