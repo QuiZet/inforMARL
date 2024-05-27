@@ -29,7 +29,16 @@ def train(args):
 
     obs_dims = {agent: env.observation_space(agent).shape[0] for agent in agents}
     action_dims = {agent: env.action_space(agent).n for agent in agents}
-    policies = {agent: MAPPOPolicy(obs_dims[agent], action_dims[agent]) for agent in agents}
+
+    # Initialize MAPPOPolicy with the required parameters
+    policies = {
+        agent: MAPPOPolicy(
+            obs_dims[agent],
+            action_dims[agent],
+            obs_dims[agent],
+            action_dims[agent]
+        ) for agent in agents
+    }
 
     if args.load_model:
         for agent in agents:
@@ -39,7 +48,7 @@ def train(args):
     output_dir = args.output_dir or f"models/run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     os.makedirs(output_dir, exist_ok=True)
 
-    num_episodes = 1000
+    num_episodes = 10000
     log_interval = 100
     all_rewards = {agent: [] for agent in agents}
 
@@ -76,20 +85,26 @@ def train(args):
                     print(f"Warning: No next observation for {agent} at episode {episode + 1}")
                     continue
                 if not done[agent] and not dones[agent] and not truncations[agent]:
-                    rollouts.append({
+                    agent_type = 'adversary' if 'adversary' in agent else 'agent'
+                    rollout = {
+                        'type': agent_type,
                         'obs': {agent: torch.tensor(obs[agent], dtype=torch.float32).clone().detach()},
                         'actions': {agent: torch.tensor([actions[agent]]).clone().detach()},
                         'rewards': {agent: [rewards[agent]]},
                         'masks': {agent: [True]},
                         'next_obs': {agent: next_obs[agent].clone().detach()}
-                    })
+                    }
+                    print(f"Collected rollout for {agent}: {rollout}")
+                    rollouts.append(rollout)
 
+            print(f"Collected {len(rollouts)} rollouts")
             if len(rollouts) >= 10:
                 if (episode + 1) % log_interval == 0 or episode == 0:
                     print(f"Updating policies with {len(rollouts)} rollouts")
                 losses = []
                 for agent in agents:
                     adv_losses, agent_losses = policies[agent].update(rollouts)
+                    print(f"Losses for agent {agent}: {adv_losses}, {agent_losses}")  # Debugging print
                     losses.append((adv_losses, agent_losses))
                 rollouts = []
 
@@ -105,6 +120,8 @@ def train(args):
                                     f"value_loss_{agent}": adv_value_loss,
                                     f"entropy_loss_{agent}": adv_entropy_loss
                                 })
+                        else:
+                            print(f"Adversary {agent} - Losses are None")
                     else:
                         agent_policy_loss, agent_value_loss, agent_entropy_loss = agent_losses
                         if agent_policy_loss is not None:
@@ -116,6 +133,8 @@ def train(args):
                                     f"value_loss_{agent}": agent_value_loss,
                                     f"entropy_loss_{agent}": agent_entropy_loss
                                 })
+                        else:
+                            print(f"Agent {agent} - Losses are None")
 
             obs = next_obs
             done = dones
