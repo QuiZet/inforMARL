@@ -17,6 +17,11 @@ class MAPPOPolicy:
         self.value_loss_coef = value_loss_coef
         self.entropy_coef = entropy_coef
 
+    def get_action(self, obs, model_type='adversaty'):
+        model=self.adversary_model if model_type == 'adversary' else self.agent_model
+        action, log_prob = model.get_action(obs)
+        return action, log_prob
+
     def load_model(self, path, model_type='adversary'):
         if model_type == 'adversary':
             self.adversary_model.load_state_dict(torch.load(path))
