@@ -212,7 +212,7 @@ if __name__ == "__main__":
     parser.add_argument("--load_model", type=str, help="Path to folder containing the model to load")
     parser.add_argument("--render", action='store_true', help="Render the environment")
     parser.add_argument("--output_dir", type=str, help="Directory to save models")
-    parser.add_argument("--share_policy", action='store_true', help="Share policy between agent types")
+    parser.add_argument("--share_policy", action='store_true', help="Share policy between agent types", default=False) #by default agents have individual policies
     args = parser.parse_args()
 
     train(args)
