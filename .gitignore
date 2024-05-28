@@ -164,3 +164,6 @@ results/
 
 playground.ipynb
 
+
+mappo_hetmpe/models
+mappo_hetmpe/wandb

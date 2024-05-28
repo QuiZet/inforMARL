@@ -15,18 +15,41 @@ def render_env_with_opencv(env):
     cv2.imshow('Simple Tag Environment', img_bgr)
     cv2.waitKey(1)
 
-def initialize_agents(env):
+def initialize_agents(env, share_policy):
     agents = {}
+    adversary_policy = None
+    agent_policy = None
     for agent_id in env.possible_agents:
         obs_space = env.observation_space(agent_id).shape[0]
         act_space = env.action_space(agent_id).n
         agent_type = 'adversary' if 'adversary' in agent_id else 'agent'
-        agents[agent_id] = MAPPOPolicy(
-            obs_dim=obs_space if agent_type == 'adversary' else obs_space,
-            action_dim=act_space if agent_type == 'adversary' else act_space,
-            agent_obs_dim=obs_space,
-            agent_action_dim=act_space
-        )
+
+        if share_policy:
+            if agent_type == 'adversary':
+                if adversary_policy is None:
+                    adversary_policy = MAPPOPolicy(
+                        obs_dim=obs_space,
+                        action_dim=act_space,
+                        agent_obs_dim=obs_space,
+                        agent_action_dim=act_space
+                    )
+                agents[agent_id] = adversary_policy
+            else:
+                if agent_policy is None:
+                    agent_policy = MAPPOPolicy(
+                        obs_dim=obs_space,
+                        action_dim=act_space,
+                        agent_obs_dim=obs_space,
+                        agent_action_dim=act_space
+                    )
+                agents[agent_id] = agent_policy
+        else:
+            agents[agent_id] = MAPPOPolicy(
+                obs_dim=obs_space,
+                action_dim=act_space,
+                agent_obs_dim=obs_space,
+                agent_action_dim=act_space
+            )
         print(f"Initialized {agent_id} with obs_dim={obs_space} and act_dim={act_space}")
     return agents
 
@@ -38,7 +61,7 @@ def train(args):
         )
 
     env = make_env()
-    policies = initialize_agents(env)
+    policies = initialize_agents(env, args.share_policy)
     initial_obs_tuple = env.reset()
     initial_obs = initial_obs_tuple[0]
     agents = env.possible_agents
@@ -189,6 +212,8 @@ if __name__ == "__main__":
     parser.add_argument("--load_model", type=str, help="Path to folder containing the model to load")
     parser.add_argument("--render", action='store_true', help="Render the environment")
     parser.add_argument("--output_dir", type=str, help="Directory to save models")
+    parser.add_argument("--share_policy", action='store_true', help="Share policy between agent types")
     args = parser.parse_args()
 
     train(args)
+
