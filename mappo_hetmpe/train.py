@@ -15,6 +15,21 @@ def render_env_with_opencv(env):
     cv2.imshow('Simple Tag Environment', img_bgr)
     cv2.waitKey(1)
 
+def initialize_agents(env):
+    agents = {}
+    for agent_id in env.possible_agents:
+        obs_space = env.observation_space(agent_id).shape[0]
+        act_space = env.action_space(agent_id).n
+        agent_type = 'adversary' if 'adversary' in agent_id else 'agent'
+        agents[agent_id] = MAPPOPolicy(
+            obs_dim=obs_space if agent_type == 'adversary' else obs_space,
+            action_dim=act_space if agent_type == 'adversary' else act_space,
+            agent_obs_dim=obs_space,
+            agent_action_dim=act_space
+        )
+        print(f"Initialized {agent_id} with obs_dim={obs_space} and act_dim={act_space}")
+    return agents
+
 def train(args):
     if args.log_wandb:
         wandb.init(
@@ -23,20 +38,10 @@ def train(args):
         )
 
     env = make_env()
+    policies = initialize_agents(env)
     initial_obs_tuple = env.reset()
     initial_obs = initial_obs_tuple[0]
     agents = env.possible_agents
-
-    obs_dims = {agent: env.observation_space(agent).shape[0] for agent in agents}
-    action_dims = {agent: env.action_space(agent).n for agent in agents}
-    policies = {
-        agent: MAPPOPolicy(
-            obs_dims[agent],
-            action_dims[agent],
-            obs_dims[agent],
-            action_dims[agent]
-        ) for agent in agents
-    }
 
     if args.load_model:
         for agent in agents:
@@ -50,6 +55,7 @@ def train(args):
     num_episodes = 10000
     log_interval = 100
     all_rewards = {agent: [] for agent in agents}
+    all_losses = {agent: {'policy_loss': [], 'value_loss': [], 'entropy_loss': []} for agent in agents}
 
     for episode in range(num_episodes):
         if (episode + 1) % log_interval == 0 or episode == 0:
@@ -81,7 +87,6 @@ def train(args):
 
             for agent in agents:
                 if agent not in next_obs:
-                    print(f"Warning: No next observation for {agent} at episode {episode + 1}")
                     continue
                 if not done[agent] and not dones[agent] and not truncations[agent]:
                     agent_type = 'adversary' if 'adversary' in agent else 'agent'
@@ -93,47 +98,51 @@ def train(args):
                         'masks': {agent: [True]},
                         'next_obs': {agent: next_obs[agent].clone().detach()}
                     }
-                    print(f"Collected rollout for {agent}: {rollout}")
                     rollouts.append(rollout)
 
-            print(f"Collected {len(rollouts)} rollouts")
             if len(rollouts) >= 10:
-                if (episode + 1) % log_interval == 0 or episode == 0:
-                    print(f"Updating policies with {len(rollouts)} rollouts")
-                losses = []
-                for agent in agents:
-                    adv_losses, agent_losses = policies[agent].update(rollouts)
-                    print(f"Losses for agent {agent}: {adv_losses}, {agent_losses}")  # Debugging print
-                    losses.append((adv_losses, agent_losses))
+                adv_rollouts = [r for r in rollouts if 'adversary' in list(r['obs'].keys())[0]]
+                agent_rollouts = [r for r in rollouts if 'agent' in list(r['obs'].keys())[0]]
+                adv_losses = None
+                agent_losses = None
+
+                if adv_rollouts:
+                    policy = policies[next(agent for agent in agents if 'adversary' in agent)]
+                    adv_losses, _ = policy.update(adv_rollouts)
+                if agent_rollouts:
+                    policy = policies[next(agent for agent in agents if 'agent' in agent)]
+                    _, agent_losses = policy.update(agent_rollouts)
+
                 rollouts = []
 
-                for agent, (adv_losses, agent_losses) in zip(agents, losses):
-                    if 'adversary' in agent:
-                        adv_policy_loss, adv_value_loss, adv_entropy_loss = adv_losses
-                        if adv_policy_loss is not None:
-                            if (episode + 1) % log_interval == 0:
-                                print(f"Adversary {agent} - Policy Loss: {adv_policy_loss}, Value Loss: {adv_value_loss}, Entropy Loss: {adv_entropy_loss}")
-                            if args.log_wandb:
-                                wandb.log({
-                                    f"policy_loss_{agent}": adv_policy_loss,
-                                    f"value_loss_{agent}": adv_value_loss,
-                                    f"entropy_loss_{agent}": adv_entropy_loss
-                                })
-                        else:
-                            print(f"Adversary {agent} - Losses are None")
-                    else:
-                        agent_policy_loss, agent_value_loss, agent_entropy_loss = agent_losses
-                        if agent_policy_loss is not None:
-                            if (episode + 1) % log_interval == 0:
-                                print(f"Agent {agent} - Policy Loss: {agent_policy_loss}, Value Loss: {agent_value_loss}, Entropy Loss: {agent_entropy_loss}")
-                            if args.log_wandb:
-                                wandb.log({
-                                    f"policy_loss_{agent}": agent_policy_loss,
-                                    f"value_loss_{agent}": agent_value_loss,
-                                    f"entropy_loss_{agent}": agent_entropy_loss
-                                })
-                        else:
-                            print(f"Agent {agent} - Losses are None")
+                if adv_losses:
+                    for agent in agents:
+                        if 'adversary' in agent:
+                            adv_policy_loss, adv_value_loss, adv_entropy_loss = adv_losses
+                            if adv_policy_loss is not None:
+                                all_losses[agent]['policy_loss'].append(adv_policy_loss)
+                                all_losses[agent]['value_loss'].append(adv_value_loss)
+                                all_losses[agent]['entropy_loss'].append(adv_entropy_loss)
+                                if args.log_wandb:
+                                    wandb.log({
+                                        f"policy_loss_{agent}": adv_policy_loss,
+                                        f"value_loss_{agent}": adv_value_loss,
+                                        f"entropy_loss_{agent}": adv_entropy_loss
+                                    })
+                if agent_losses:
+                    for agent in agents:
+                        if 'agent' in agent:
+                            agent_policy_loss, agent_value_loss, agent_entropy_loss = agent_losses
+                            if agent_policy_loss is not None:
+                                all_losses[agent]['policy_loss'].append(agent_policy_loss)
+                                all_losses[agent]['value_loss'].append(agent_value_loss)
+                                all_losses[agent]['entropy_loss'].append(agent_entropy_loss)
+                                if args.log_wandb:
+                                    wandb.log({
+                                        f"policy_loss_{agent}": agent_policy_loss,
+                                        f"value_loss_{agent}": agent_value_loss,
+                                        f"entropy_loss_{agent}": agent_entropy_loss
+                                    })
 
             obs = next_obs
             done = dones
@@ -155,6 +164,15 @@ def train(args):
             print(f"Episode {episode + 1} summary (last {log_interval} episodes):")
             for agent, avg_reward in avg_rewards.items():
                 print(f"  Agent {agent} average reward: {avg_reward}")
+
+            for agent in agents:
+                avg_policy_loss = sum(all_losses[agent]['policy_loss']) / len(all_losses[agent]['policy_loss']) if all_losses[agent]['policy_loss'] else None
+                avg_value_loss = sum(all_losses[agent]['value_loss']) / len(all_losses[agent]['value_loss']) if all_losses[agent]['value_loss'] else None
+                avg_entropy_loss = sum(all_losses[agent]['entropy_loss']) / len(all_losses[agent]['entropy_loss']) if all_losses[agent]['entropy_loss'] else None
+
+                print(f"Agent {agent} - Average Policy Loss: {avg_policy_loss}, Average Value Loss: {avg_value_loss}, Average Entropy Loss: {avg_entropy_loss}")
+
+                all_losses[agent] = {'policy_loss': [], 'value_loss': [], 'entropy_loss': []}
 
         initial_obs_tuple = env.reset()
         initial_obs = initial_obs_tuple[0]

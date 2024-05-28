@@ -5,8 +5,11 @@ from .mappo import MAPPO, compute_returns
 
 class MAPPOPolicy:
     def __init__(self, obs_dim, action_dim, agent_obs_dim, agent_action_dim, lr=3e-4, gamma=0.99, gae_lambda=0.95, clip_param=0.2, ppo_epoch=10, num_mini_batch=32, value_loss_coef=0.5, entropy_coef=0.01):
+        print(f"Initializing MAPPOPolicy with adversary obs_dim={obs_dim}, agent_obs_dim={agent_obs_dim}")
         self.adversary_model = MAPPO(obs_dim, action_dim)
+        print(f"Adversary model initialized with obs_dim={obs_dim}")
         self.agent_model = MAPPO(agent_obs_dim, agent_action_dim)
+        print(f"Agent model initialized with obs_dim={agent_obs_dim}")
         self.adversary_optimizer = optim.Adam(self.adversary_model.parameters(), lr=lr)
         self.agent_optimizer = optim.Adam(self.agent_model.parameters(), lr=lr)
         self.gamma = gamma
@@ -17,8 +20,8 @@ class MAPPOPolicy:
         self.value_loss_coef = value_loss_coef
         self.entropy_coef = entropy_coef
 
-    def get_action(self, obs, model_type='adversaty'):
-        model=self.adversary_model if model_type == 'adversary' else self.agent_model
+    def get_action(self, obs, model_type='adversary'):
+        model = self.adversary_model if model_type == 'adversary' else self.agent_model
         action, log_prob = model.get_action(obs)
         return action, log_prob
 
@@ -27,69 +30,37 @@ class MAPPOPolicy:
             self.adversary_model.load_state_dict(torch.load(path))
         elif model_type == 'agent':
             self.agent_model.load_state_dict(torch.load(path))
-    
-    def update(self, rollouts):
-        print("Update function called")
-        print(f"Total rollouts: {len(rollouts)}")
 
-        # Separate rollouts by agent type to handle different observation sizes
+    def update(self, rollouts):
         adversary_rollouts = [r for r in rollouts if 'adversary' in list(r['obs'].keys())[0]]
         agent_rollouts = [r for r in rollouts if 'agent' in list(r['obs'].keys())[0]]
 
-        print(f"Adversary rollouts: {len(adversary_rollouts)},\n Agent rollouts: {len(agent_rollouts)}")
-
         def process_rollouts(rollouts, model, optimizer):
             if not rollouts:
-                print("No rollouts to process")
                 return None, None, None
 
-            print(f"Rollouts: {rollouts}")
-
-            # Extract the first agent key from the first rollout as a template
             agent_key = list(rollouts[0]['obs'].keys())[0]
-            print(f"Agent key: {agent_key}")
+            obs_list = [r['obs'][agent_key].unsqueeze(0) for r in rollouts if agent_key in r['obs']]
+            actions_list = [r['actions'][agent_key].unsqueeze(0) for r in rollouts if agent_key in r['actions']]
+            rewards_list = [r['rewards'][agent_key][0] for r in rollouts if agent_key in r['rewards']]
+            masks_list = [r['masks'][agent_key][0] for r in rollouts if agent_key in r['masks']]
+            next_obs_list = [r['next_obs'][agent_key].unsqueeze(0) for r in rollouts if agent_key in r['next_obs']]
 
-            try:
-                obs_list = [r['obs'][agent_key].unsqueeze(0) for r in rollouts if agent_key in r['obs']]
-                actions_list = [r['actions'][agent_key].unsqueeze(0) for r in rollouts if agent_key in r['actions']]
-                rewards_list = [r['rewards'][agent_key][0] for r in rollouts if agent_key in r['rewards']]
-                masks_list = [r['masks'][agent_key][0] for r in rollouts if agent_key in r['masks']]
-                next_obs_list = [r['next_obs'][agent_key].unsqueeze(0) for r in rollouts if agent_key in r['next_obs']]
+            obs = torch.cat(obs_list) if obs_list else torch.tensor([])
+            actions = torch.cat(actions_list) if actions_list else torch.tensor([])
+            rewards = torch.tensor(rewards_list, dtype=torch.float32) if rewards_list else torch.tensor([])
+            masks = torch.tensor(masks_list, dtype=torch.float32) if masks_list else torch.tensor([])
+            next_obs = torch.cat(next_obs_list) if next_obs_list else torch.tensor([])
 
-                # Print the lists to debug the data
-                print("obs_list:", obs_list)
-                print("actions_list:", actions_list)
-                print("rewards_list:", rewards_list)
-                print("masks_list:", masks_list)
-                print("next_obs_list:", next_obs_list)
+            obs_dim = model.critic[0].in_features
+            if next_obs.size(1) != obs_dim:
+                raise ValueError(f"Expected obs_dim {obs_dim}, but got {next_obs.size(1)}")
 
-                # Convert lists to tensors
-                obs = torch.cat(obs_list) if obs_list else torch.tensor([])
-                actions = torch.cat(actions_list) if actions_list else torch.tensor([])
-                rewards = torch.tensor(rewards_list, dtype=torch.float32) if rewards_list else torch.tensor([])
-                masks = torch.tensor(masks_list, dtype=torch.float32) if masks_list else torch.tensor([])
-                next_obs = torch.cat(next_obs_list) if next_obs_list else torch.tensor([])
-            except KeyError as e:
-                print(f"KeyError: {e}")
-                print("Rollout keys available:", rollouts[0].keys())
-                print("Observation keys available:", rollouts[0]['obs'].keys())
-                raise e
-
-            print("Next obs:", next_obs)
-            print(f"Next obs shape: {next_obs.shape}")
-            
             next_value = model.critic(next_obs).detach()
-            print(f"Next value shape: {next_value.shape}")
-            print("Next value:", next_value)
             returns = compute_returns(next_value, rewards, masks, self.gamma)
-            print("Computed returns:", returns)
 
-            # Ensure returns is a tensor
             returns = torch.stack(returns) if isinstance(returns, list) else returns
-            print("Returns as tensor:", returns)
-
             advantages = returns - model.critic(obs).detach()
-            print("Advantages:", advantages)
 
             policy_losses = []
             value_losses = []
@@ -102,9 +73,6 @@ class MAPPOPolicy:
                     obs_batch, actions_batch, return_batch, adv_batch, mask_batch = sample
 
                     values, action_log_probs, dist_entropy = model.evaluate_actions(obs_batch, actions_batch)
-                    print("Values:", values)
-                    print("Action log probs:", action_log_probs)
-                    print("Dist entropy:", dist_entropy)
 
                     ratio = torch.exp(action_log_probs - action_log_probs.detach())
                     surr1 = ratio * adv_batch
@@ -126,8 +94,7 @@ class MAPPOPolicy:
             avg_entropy_loss = sum(entropy_losses) / len(entropy_losses) if entropy_losses else None
             
             return avg_policy_loss, avg_value_loss, avg_entropy_loss
-        
-        # Process rollouts for adversaries and agents separately
+
         adv_losses = process_rollouts(adversary_rollouts, self.adversary_model, self.adversary_optimizer) if adversary_rollouts else (None, None, None)
         agent_losses = process_rollouts(agent_rollouts, self.agent_model, self.agent_optimizer) if agent_rollouts else (None, None, None)
 
